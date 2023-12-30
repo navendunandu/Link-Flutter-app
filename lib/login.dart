@@ -35,21 +35,26 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Welcome To Link",
-              style: TextStyle(
-                  color: const Color.fromRGBO(21, 101, 192, 1),
-                  fontWeight: FontWeight.w800,
-                  fontSize: 40),
-            ),
-            Text(
-              "the complete legal app",
-              style: TextStyle(color: Colors.black54, fontSize: 17),
-            )
-          ],
+          automaticallyImplyLeading: false, // Add this line to disable the leading icon
+
+        title: Padding(
+          padding: const EdgeInsets.all(35.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Welcome To Link",
+                style: TextStyle(
+                    color: const Color.fromRGBO(21, 101, 192, 1),
+                    fontWeight: FontWeight.w800,
+                    fontSize: 40),
+              ),
+              Text(
+                "the complete legal app",
+                style: TextStyle(color: Colors.black54, fontSize: 17),
+              )
+            ],
+          ),
         ),
         toolbarHeight: 125,
       ),

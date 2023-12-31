@@ -30,6 +30,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _lastName = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _dobController = TextEditingController();
   final TextEditingController _aadharNumberController = TextEditingController();
@@ -37,6 +38,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _districtController = TextEditingController();
   final TextEditingController _placeController = TextEditingController();
   final TextEditingController _pincodeController = TextEditingController();
+  bool _obs_text = true;
 
   String? gender;
   String? selectedDistrict;
@@ -49,37 +51,38 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   void register() {
-  print("Registering...");
-  print("Name: ${_firstName.text} ${_lastName.text}");
-  print("Email: ${_emailController.text}");
-  print("Password: ${_passwordController.text}");
-  print("Phone Number: ${_phoneNumberController.text}");
-  print("Date of Birth: ${_dobController.text}");
-  print("Gender: $gender");
-  print("Aadhar Number: ${_aadharNumberController.text}");
-  print("Address: ${_addressController.text}");
-  print("District: $selectedDistrict");
-  print("Place: ${_placeController.text}");
-  print("Pin Code: ${_pincodeController.text}");
+    print("Registering...");
+    print("Name: ${_firstName.text} ${_lastName.text}");
+    print("Email: ${_emailController.text}");
+    print("Password: ${_passwordController.text}");
+    print("Password: ${_confirmPasswordController.text}");
+    print("Phone Number: ${_phoneNumberController.text}");
+    print("Date of Birth: ${_dobController.text}");
+    print("Gender: $gender");
+    print("Aadhar Number: ${_aadharNumberController.text}");
+    print("Address: ${_addressController.text}");
+    print("District: $selectedDistrict");
+    print("Place: ${_placeController.text}");
+    print("Pin Code: ${_pincodeController.text}");
 
-  // Clear all the controllers
-  _firstName.clear();
-  _lastName.clear();
-  _emailController.clear();
-  _passwordController.clear();
-  _phoneNumberController.clear();
-  _dobController.clear();
-  _aadharNumberController.clear();
-  _addressController.clear();
-  _districtController.clear();
-  _placeController.clear();
-  _pincodeController.clear();
+    // Clear all the controllers
+    _firstName.clear();
+    _lastName.clear();
+    _emailController.clear();
+    _passwordController.clear();
+    _phoneNumberController.clear();
+    _dobController.clear();
+    _aadharNumberController.clear();
+    _addressController.clear();
+    _districtController.clear();
+    _placeController.clear();
+    _pincodeController.clear();
 
-  setState(() {
-    gender = null;
-    selectedDistrict = null;
-  });
-}
+    setState(() {
+      gender = null;
+      selectedDistrict = null;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -141,12 +144,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
                 SizedBox(height: 16),
                 TextFormField(
-                  controller: _passwordController,
-                  obscureText: true,
-                  decoration: InputDecoration(labelText: "Password"),
-                ),
-                SizedBox(height: 16),
-                TextFormField(
                   controller: _phoneNumberController,
                   decoration: InputDecoration(labelText: "Phone Number"),
                 ),
@@ -200,11 +197,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   controller: _addressController,
                   decoration: InputDecoration(labelText: "Address"),
                 ),
-                
                 SizedBox(height: 16),
                 Row(
                   children: [
-                    Text("District"),SizedBox(width: 15,),
+                    Text("District"),
+                    SizedBox(
+                      width: 15,
+                    ),
                     Flexible(
                       child: DropdownButtonFormField<String>(
                         value: selectedDistrict,
@@ -232,6 +231,33 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 TextFormField(
                   controller: _pincodeController,
                   decoration: InputDecoration(labelText: "Pin Code"),
+                ),
+                SizedBox(height: 16),
+                TextFormField(
+                  obscureText: _obs_text,
+                  decoration: InputDecoration(
+                      hintText: "Password",
+                      suffix: InkWell(
+                        child: Icon(Icons.remove_red_eye_outlined),
+                        onTap: () {
+                          _obs_text = !_obs_text;
+                          setState(() {});
+                        },
+                      )),
+                  controller: _passwordController,
+                ),SizedBox(height: 16),
+                TextFormField(
+                  obscureText: _obs_text,
+                  decoration: InputDecoration(
+                      hintText: "Confirm password",
+                      suffix: InkWell(
+                        child: Icon(Icons.remove_red_eye_outlined),
+                        onTap: () {
+                          _obs_text = !_obs_text;
+                          setState(() {});
+                        },
+                      )),
+                  controller: _confirmPasswordController,
                 ),
                 SizedBox(height: 24),
                 ElevatedButton(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:link/dashboard.dart';
 import 'package:link/register.dart';
 
 class Login extends StatefulWidget {
@@ -29,6 +30,11 @@ class _LoginState extends State<Login> {
   void login() {
     print(_name.text);
     print(_password.text);
+
+    if (_name.text == _password.text) {
+      Navigator.pushReplacement(context, 
+      MaterialPageRoute(builder: (context)=>Dashboard()));
+  }
   }
 
   @override

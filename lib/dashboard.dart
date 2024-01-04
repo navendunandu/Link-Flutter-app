@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:link/main.dart';
 
 class Dashboard extends StatelessWidget {
-  const Dashboard({super.key});
+  const Dashboard({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,33 +21,66 @@ class Dashboard extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Container(
-            child: Container(
           child: Column(
             children: [
               Container(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 20, bottom: 60, left: 30),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            "LINK",
+                            style: TextStyle(
+                                fontSize: 60,
+                                fontWeight: FontWeight.w600,
+                                letterSpacing: 5),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [Text("THE COMPLETE LEGAL SERVICE APP")],
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              Container(
                 child: Container(
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: appcolor.secondary),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(30),
+                    ),
+                    color: appcolor.secondary,
+                  ),
                   child: Padding(
-                    padding: const EdgeInsets.all(20.0),
+                    padding: const EdgeInsets.only(
+                        top: 40, bottom: 40, right: 20, left: 20),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Icon(
                           Icons.account_circle,
                           size: 70,
+                          color: appcolor.white,
                         ),
                         Flexible(
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Text(
-                                "User name",
-                                style: TextStyle(
+                              Padding(
+                                padding: const EdgeInsets.only(left: 10),
+                                child: Text(
+                                  "User name",
+                                  style: TextStyle(
                                     color: appcolor.white,
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.w500),
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
                               ),
                               SizedBox(
                                 width: 20,
@@ -64,17 +97,19 @@ class Dashboard extends StatelessWidget {
                 decoration: BoxDecoration(color: appcolor.secondary),
                 child: Container(
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadiusDirectional.only(
-                          topEnd: Radius.circular(20),
-                          topStart: Radius.circular(20)),
-                      color: appcolor.white),
+                    borderRadius: BorderRadiusDirectional.only(
+                      topEnd: Radius.circular(30),
+                      topStart: Radius.circular(30),
+                    ),
+                    color: appcolor.white,
+                  ),
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: SingleChildScrollView(
                       child: Column(
                         children: [
                           SizedBox(
-                            height: 20,
+                            height: 30,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -86,238 +121,13 @@ class Dashboard extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(15),
                                     boxShadow: [
                                       BoxShadow(
-                                          color: Colors.black.withOpacity(0.2),
-                                          blurRadius: 7,
-                                          spreadRadius: 3,
-                                          offset: Offset(0, 2))
+                                        color: Colors.black.withOpacity(0.2),
+                                        blurRadius: 7,
+                                        spreadRadius: 3,
+                                        offset: Offset(0, 2),
+                                      )
                                     ],
                                     color: appcolor.white,
-                                    
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(15.0),
-                                    child: Column(
-                                      children: [
-                                        Image.asset(
-                                          "assets/images/permit.png",
-                                          width: 100,
-                                        ),
-                                        Text("data1"),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(15.0),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                    boxShadow: [
-                                      BoxShadow(
-                                          color: Colors.black.withOpacity(0.2),
-                                          blurRadius: 7,
-                                          spreadRadius: 3,
-                                          offset: Offset(0, 2))
-                                    ],
-                                    color: appcolor.white,
-                                    // border: Border.all(
-                                    //     color: appcolor.text2, width: 1),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(15.0),
-                                    child: Column(
-                                      children: [
-                                        Image.asset(
-                                          "assets/images/fine.png",
-                                          width: 100,
-                                        ),
-                                        Text("data2"),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(15.0),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                    boxShadow: [
-                                      BoxShadow(
-                                          color: Colors.black.withOpacity(0.2),
-                                          blurRadius: 7,
-                                          spreadRadius: 3,
-                                          offset: Offset(0, 2))
-                                    ],
-                                    color: appcolor.white,
-                                    // border: Border.all(
-                                    //     color: appcolor.text2, width: 1),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(15.0),
-                                    child: Column(
-                                      children: [
-                                        Image.asset(
-                                          "assets/images/calender.png",
-                                          width: 100,
-                                        ),
-                                        Text("data3"),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(15.0),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                    boxShadow: [
-                                      BoxShadow(
-                                          color: Colors.black.withOpacity(0.2),
-                                          blurRadius: 7,
-                                          spreadRadius: 3,
-                                          offset: Offset(0, 2))
-                                    ],
-                                    color: appcolor.white,
-                                    // border: Border.all(
-                                    //     color: appcolor.text2, width: 1),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(15.0),
-                                    child: Column(
-                                      children: [
-                                        Image.asset(
-                                          "assets/images/fileCase.png",
-                                          width: 100,
-                                        ),
-                                        Text("data4"),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(15.0),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                    boxShadow: [
-                                      BoxShadow(
-                                          color: Colors.black.withOpacity(0.2),
-                                          blurRadius: 7,
-                                          spreadRadius: 3,
-                                          offset: Offset(0, 2))
-                                    ],
-                                    color: appcolor.white,
-                                    // border: Border.all(
-                                    //     color: appcolor.text2, width: 1),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(15.0),
-                                    child: Column(
-                                      children: [
-                                        Image.asset(
-                                          "assets/images/lawyer.png",
-                                          width: 100,
-                                        ),
-                                        Text("data5"),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(15.0),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                    boxShadow: [
-                                      BoxShadow(
-                                          color: Colors.black.withOpacity(0.2),
-                                          blurRadius: 7,
-                                          spreadRadius: 3,
-                                          offset: Offset(0, 2))
-                                    ],
-                                    color: appcolor.white,
-                                    // border: Border.all(
-                                    //     color: appcolor.text2, width: 1),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(15.0),
-                                    child: Column(
-                                      children: [
-                                        Image.asset(
-                                          "assets/images/pasport.png",
-                                          width: 100,
-                                        ),
-                                        Text("data6"),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(15.0),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                    boxShadow: [
-                                      BoxShadow(
-                                          color: Colors.black.withOpacity(0.2),
-                                          blurRadius: 7,
-                                          spreadRadius: 3,
-                                          offset: Offset(0, 2))
-                                    ],
-                                    color: appcolor.white,
-                                    // border: Border.all(
-                                    //     color: appcolor.text2, width: 1),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(15.0),
-                                    child: Column(
-                                      children: [
-                                        Image.asset(
-                                          "assets/images/alert-em.png",
-                                          width: 100,
-                                        ),
-                                        Text("data7"),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(15.0),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                    boxShadow: [
-                                      BoxShadow(
-                                          color: Colors.black.withOpacity(0.2),
-                                          blurRadius: 7,
-                                          spreadRadius: 3,
-                                          offset: Offset(0, 2))
-                                    ],
-                                    color: appcolor.white,
-                                    // border: Border.all(
-                                    //     color: appcolor.text2, width: 1),
                                   ),
                                   child: Padding(
                                     padding: const EdgeInsets.all(15.0),
@@ -327,7 +137,162 @@ class Dashboard extends StatelessWidget {
                                           "assets/images/missing.png",
                                           width: 100,
                                         ),
-                                        Text("data8"),
+                                        Text("MISSING"),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(15.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.2),
+                                        blurRadius: 7,
+                                        spreadRadius: 3,
+                                        offset: Offset(0, 2),
+                                      )
+                                    ],
+                                    color: appcolor.white,
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(15.0),
+                                    child: Column(
+                                      children: [
+                                        Image.asset(
+                                          "assets/images/lawyer.png",
+                                          width: 100,
+                                        ),
+                                        Text("LAWYER"),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(15.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.2),
+                                        blurRadius: 7,
+                                        spreadRadius: 3,
+                                        offset: Offset(0, 2),
+                                      )
+                                    ],
+                                    color: appcolor.white,
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(15.0),
+                                    child: Column(
+                                      children: [
+                                        Image.asset(
+                                          "assets/images/permit.png",
+                                          width: 100,
+                                        ),
+                                        Text("PERMIT"),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(15.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.2),
+                                        blurRadius: 7,
+                                        spreadRadius: 3,
+                                        offset: Offset(0, 2),
+                                      )
+                                    ],
+                                    color: appcolor.white,
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(15.0),
+                                    child: Column(
+                                      children: [
+                                        Image.asset(
+                                          "assets/images/fine.png",
+                                          width: 100,
+                                        ),
+                                        Text("FINE"),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(15.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.2),
+                                        blurRadius: 7,
+                                        spreadRadius: 3,
+                                        offset: Offset(0, 2),
+                                      )
+                                    ],
+                                    color: appcolor.white,
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(15.0),
+                                    child: Column(
+                                      children: [
+                                        Image.asset(
+                                          "assets/images/fileCase.png",
+                                          width: 100,
+                                        ),
+                                        Text("CASE"),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(15.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.2),
+                                        blurRadius: 7,
+                                        spreadRadius: 3,
+                                        offset: Offset(0, 2),
+                                      )
+                                    ],
+                                    color: appcolor.white,
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(15.0),
+                                    child: Column(
+                                      children: [
+                                        Image.asset(
+                                          "assets/images/alert-em.png",
+                                          width: 100,
+                                        ),
+                                        Text("EMERGENCY"),
                                       ],
                                     ),
                                   ),
@@ -341,9 +306,20 @@ class Dashboard extends StatelessWidget {
                   ),
                 ),
               ),
+              Container(
+                decoration: BoxDecoration(color: appcolor.primary),
+              
+               child: Column(
+                 children: [
+                   Text("data"),
+                   SizedBox.expand(child: ,)
+                 ],
+               ),
+               
+              ),
             ],
           ),
-        )),
+        ),
       ),
     );
   }

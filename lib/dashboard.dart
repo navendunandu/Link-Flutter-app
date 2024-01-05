@@ -1,6 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:link/case.dart';
+import 'package:link/emergency.dart';
+import 'package:link/fine.dart';
+import 'package:link/lawyer.dart';
 import 'package:link/main.dart';
+import 'package:link/missing.dart';
+import 'package:link/permit.dart';
 
 class Dashboard extends StatelessWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -9,6 +15,8 @@ class Dashboard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        surfaceTintColor: appcolor.white,
+        backgroundColor: Color.fromARGB(0, 0, 0, 0),
         actions: [
           Icon(
             Icons.settings,
@@ -97,10 +105,7 @@ class Dashboard extends StatelessWidget {
                 decoration: BoxDecoration(color: appcolor.secondary),
                 child: Container(
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadiusDirectional.only(
-                      topEnd: Radius.circular(30),
-                      topStart: Radius.circular(30),
-                    ),
+                    borderRadius: BorderRadiusDirectional.circular(20),
                     color: appcolor.white,
                   ),
                   child: Padding(
@@ -116,121 +121,76 @@ class Dashboard extends StatelessWidget {
                             children: [
                               Padding(
                                 padding: const EdgeInsets.all(15.0),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black.withOpacity(0.2),
-                                        blurRadius: 7,
-                                        spreadRadius: 3,
-                                        offset: Offset(0, 2),
-                                      )
-                                    ],
-                                    color: appcolor.white,
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(15.0),
-                                    child: Column(
-                                      children: [
-                                        Image.asset(
-                                          "assets/images/missing.png",
-                                          width: 100,
-                                        ),
-                                        Text("MISSING"),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => const Missing(),
+                                        ));
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black.withOpacity(0.2),
+                                          blurRadius: 7,
+                                          spreadRadius: 3,
+                                          offset: Offset(0, 2),
+                                        )
                                       ],
+                                      color: appcolor.white,
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(15.0),
+                                      child: Column(
+                                        children: [
+                                          Image.asset(
+                                            "assets/images/Dashboard/missing.png",
+                                            width: 100,
+                                          ),
+                                          Text("MISSING"),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
                               Padding(
                                 padding: const EdgeInsets.all(15.0),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black.withOpacity(0.2),
-                                        blurRadius: 7,
-                                        spreadRadius: 3,
-                                        offset: Offset(0, 2),
-                                      )
-                                    ],
-                                    color: appcolor.white,
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(15.0),
-                                    child: Column(
-                                      children: [
-                                        Image.asset(
-                                          "assets/images/lawyer.png",
-                                          width: 100,
-                                        ),
-                                        Text("LAWYER"),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => Lawyer(),
+                                        ));
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black.withOpacity(0.2),
+                                          blurRadius: 7,
+                                          spreadRadius: 3,
+                                          offset: Offset(0, 2),
+                                        )
                                       ],
+                                      color: appcolor.white,
                                     ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(15.0),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black.withOpacity(0.2),
-                                        blurRadius: 7,
-                                        spreadRadius: 3,
-                                        offset: Offset(0, 2),
-                                      )
-                                    ],
-                                    color: appcolor.white,
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(15.0),
-                                    child: Column(
-                                      children: [
-                                        Image.asset(
-                                          "assets/images/permit.png",
-                                          width: 100,
-                                        ),
-                                        Text("PERMIT"),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(15.0),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black.withOpacity(0.2),
-                                        blurRadius: 7,
-                                        spreadRadius: 3,
-                                        offset: Offset(0, 2),
-                                      )
-                                    ],
-                                    color: appcolor.white,
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(15.0),
-                                    child: Column(
-                                      children: [
-                                        Image.asset(
-                                          "assets/images/fine.png",
-                                          width: 100,
-                                        ),
-                                        Text("FINE"),
-                                      ],
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(15.0),
+                                      child: Column(
+                                        children: [
+                                          Image.asset(
+                                            "assets/images/Dashboard/lawyer.png",
+                                            width: 100,
+                                          ),
+                                          Text("LAWYER"),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -242,58 +202,157 @@ class Dashboard extends StatelessWidget {
                             children: [
                               Padding(
                                 padding: const EdgeInsets.all(15.0),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black.withOpacity(0.2),
-                                        blurRadius: 7,
-                                        spreadRadius: 3,
-                                        offset: Offset(0, 2),
-                                      )
-                                    ],
-                                    color: appcolor.white,
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(15.0),
-                                    child: Column(
-                                      children: [
-                                        Image.asset(
-                                          "assets/images/fileCase.png",
-                                          width: 100,
-                                        ),
-                                        Text("CASE"),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => const Permit(),
+                                        ));
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black.withOpacity(0.2),
+                                          blurRadius: 7,
+                                          spreadRadius: 3,
+                                          offset: Offset(0, 2),
+                                        )
                                       ],
+                                      color: appcolor.white,
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(15.0),
+                                      child: Column(
+                                        children: [
+                                          Image.asset(
+                                            "assets/images/Dashboard/permit.png",
+                                            width: 100,
+                                          ),
+                                          Text("PERMIT"),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
                               Padding(
                                 padding: const EdgeInsets.all(15.0),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black.withOpacity(0.2),
-                                        blurRadius: 7,
-                                        spreadRadius: 3,
-                                        offset: Offset(0, 2),
-                                      )
-                                    ],
-                                    color: appcolor.white,
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(15.0),
-                                    child: Column(
-                                      children: [
-                                        Image.asset(
-                                          "assets/images/alert-em.png",
-                                          width: 100,
-                                        ),
-                                        Text("EMERGENCY"),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => const Fine(),
+                                        ));
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black.withOpacity(0.2),
+                                          blurRadius: 7,
+                                          spreadRadius: 3,
+                                          offset: Offset(0, 2),
+                                        )
                                       ],
+                                      color: appcolor.white,
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(15.0),
+                                      child: Column(
+                                        children: [
+                                          Image.asset(
+                                            "assets/images/Dashboard/fine.png",
+                                            width: 100,
+                                          ),
+                                          Text("FINE"),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(15.0),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => const Case(),
+                                        ));
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black.withOpacity(0.2),
+                                          blurRadius: 7,
+                                          spreadRadius: 3,
+                                          offset: Offset(0, 2),
+                                        )
+                                      ],
+                                      color: appcolor.white,
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(15.0),
+                                      child: Column(
+                                        children: [
+                                          Image.asset(
+                                            "assets/images/Dashboard/fileCase.png",
+                                            width: 100,
+                                          ),
+                                          Text("CASE"),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(15.0),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => const Emergency(),
+                                        ));
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black.withOpacity(0.2),
+                                          blurRadius: 7,
+                                          spreadRadius: 3,
+                                          offset: Offset(0, 2),
+                                        )
+                                      ],
+                                      color: appcolor.white,
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(15.0),
+                                      child: Column(
+                                        children: [
+                                          Image.asset(
+                                            "assets/images/Dashboard/alert-em.png",
+                                            width: 100,
+                                          ),
+                                          Text("EMERGENCY"),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -307,15 +366,14 @@ class Dashboard extends StatelessWidget {
                 ),
               ),
               Container(
-                decoration: BoxDecoration(color: appcolor.primary),
-              
-               child: Column(
-                 children: [
-                   Text("data"),
-                   SizedBox.expand(child: ,)
-                 ],
-               ),
-               
+                decoration: BoxDecoration(color: appcolor.secondary),
+                child: Row(
+                  children: [
+                    SizedBox(
+                      height: 30,
+                    )
+                  ],
+                ),
               ),
             ],
           ),

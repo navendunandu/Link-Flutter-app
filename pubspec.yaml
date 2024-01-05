@@ -22,3 +22,15 @@ flutter:
   assets:
     - assets/
     - assets/images/
+    - assets/images/Dashboard/
+    - assets/images/Permit/
+    - assets/images/Lawyer/
+    - assets/images/Missing/
+    - assets/images/Fine/
+    - assets/images/Case/
+    - assets/images/Emergency/
+    
+
+
+
+    

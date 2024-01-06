@@ -1,15 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:link/case.dart';
-import 'package:link/emergency.dart';
-import 'package:link/fine.dart';
-import 'package:link/lawyer.dart';
+import 'package:link/CasePages/case.dart';
+import 'package:link/EmergencyPages/emergency.dart';
+import 'package:link/FinePages/fine.dart';
+import 'package:link/LawyerPages/lawyer.dart';
 import 'package:link/main.dart';
-import 'package:link/missing.dart';
-import 'package:link/permit.dart';
+import 'package:link/MissingPages/missing.dart';
+import 'package:link/PermitPages/permit.dart';
 
 class Dashboard extends StatelessWidget {
   const Dashboard({Key? key}) : super(key: key);
+
+  void emergency() {
+    print("Emergency");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,9 +79,9 @@ class Dashboard extends StatelessWidget {
                           size: 70,
                           color: appcolor.white,
                         ),
-                        Flexible(
+                        Expanded(
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Padding(
                                 padding: const EdgeInsets.only(left: 10),
@@ -90,8 +94,44 @@ class Dashboard extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              SizedBox(
-                                width: 20,
+                              Padding(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: TextButton(
+                                  onPressed: () async {
+                                    await Future.delayed(Duration(seconds: 5));
+                                    emergency();
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: appcolor.red,
+                                      borderRadius: BorderRadius.circular(15),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Color(0xFF000000)
+                                              .withOpacity(0.1),
+                                          offset: Offset(3, 3),
+                                          blurRadius: 0,
+                                          spreadRadius: 2,
+                                        ),
+                                      ],
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(25.0),
+                                      child: Column(
+                                        children: [
+                                          Text(
+                                            "EMERGENCY",
+                                            style: TextStyle(
+                                                color: appcolor.white,
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                          Text("hold for 5 seconds",
+                                              style: TextStyle(fontSize: 9)),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
                               )
                             ],
                           ),
@@ -326,7 +366,8 @@ class Dashboard extends StatelessWidget {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => const Emergency(),
+                                          builder: (context) =>
+                                              const Emergency(),
                                         ));
                                   },
                                   child: Container(

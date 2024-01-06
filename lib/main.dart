@@ -10,6 +10,7 @@ class appcolor{
   static  Color accent = Colors.blue.shade100;
   static  Color text = Colors.grey.shade900;
   static  Color text2 = Colors.grey.shade700;
+  static  Color red =  Colors.red;
   static  Color white = Colors.white;
   
 }

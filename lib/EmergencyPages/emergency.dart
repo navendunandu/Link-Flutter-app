@@ -2,14 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:link/main.dart';
 
-class Missing extends StatefulWidget {
-  const Missing({super.key});
+class Emergency extends StatefulWidget {
+  const Emergency({super.key});
 
   @override
-  State<Missing> createState() => _MissingState();
+  State<Emergency> createState() => _EmergencyState();
 }
 
-class _MissingState extends State<Missing> {
+class _EmergencyState extends State<Emergency> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +27,7 @@ class _MissingState extends State<Missing> {
               size: 30,
             ),
           ),
-          title: Text("MISSING PERSON",
+          title: Text("Emergency",
               style: TextStyle(color: appcolor.white, fontSize: 30)),
         ),
         body: SingleChildScrollView(
@@ -76,13 +76,13 @@ class _MissingState extends State<Missing> {
                                 child: Row(
                                   children: [
                                     Image.asset(
-                                      "assets/images/Missing/missing_report.png",
+                                      "assets/images/Emergency/police.png",
                                       width: 100,
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Text(
-                                        " Missing person",
+                                        " Police ",
                                         style: TextStyle(fontSize: 20),
                                       ),
                                     ),
@@ -120,13 +120,13 @@ class _MissingState extends State<Missing> {
                                 child: Row(
                                   children: [
                                     Image.asset(
-                                      "assets/images/Missing/pet.png",
+                                      "assets/images/Emergency/ambulance.png",
                                       width: 100,
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Text(
-                                        " Missing Pet",
+                                        " Ambulance",
                                         style: TextStyle(fontSize: 20),
                                       ),
                                     ),
@@ -164,13 +164,13 @@ class _MissingState extends State<Missing> {
                                 child: Row(
                                   children: [
                                     Image.asset(
-                                      "assets/images/Missing/items.png",
+                                      "assets/images/Emergency/Fire.png",
                                       width: 100,
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Text(
-                                        " Missing Belonging",
+                                        " Fire & Safty",
                                         style: TextStyle(fontSize: 20),
                                       ),
                                     ),
@@ -180,50 +180,7 @@ class _MissingState extends State<Missing> {
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: GestureDetector(
-                            // onTap: () {
-                            //   Navigator.push(
-                            //       context,
-                            //       MaterialPageRoute(
-                            //         builder: (context) => const Fine(),
-                            //       ));
-                            // },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.2),
-                                    blurRadius: 7,
-                                    spreadRadius: 3,
-                                    offset: Offset(0, 2),
-                                  )
-                                ],
-                                color: appcolor.white,
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(15.0),
-                                child: Row(
-                                  children: [
-                                    Image.asset(
-                                      "assets/images/Missing/found.png",
-                                      width: 100,
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                        " Report Found",
-                                        style: TextStyle(fontSize: 20),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
+                        
                       ],
                     )
                   ]),

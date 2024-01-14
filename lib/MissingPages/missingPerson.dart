@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:link/main.dart';
 
 class MissingPerson extends StatefulWidget {
@@ -14,10 +17,10 @@ class _MissingPersonState extends State<MissingPerson> {
     print("Image: ");
   }
 
-  
   DateTime? _dob;
   DateTime? _missingDate;
-
+  XFile? _selectedImage;
+  String? _imageUrl;
   final TextEditingController _name = TextEditingController();
   final TextEditingController _contact = TextEditingController();
   final TextEditingController _discription = TextEditingController();
@@ -57,13 +60,24 @@ class _MissingPersonState extends State<MissingPerson> {
     }
   }
 
+  Future<void> _pickImage() async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setState(() {
+        _selectedImage = XFile(pickedFile.path);
+      });
+    }
+  }
+
   void submit() {
-    print("Name :"+ _name.text);
-    print("Number : " +_contact.text);
-    print("DOB : " +_dobController.text);
-    print("Description : " +_discription .text);
-    print("missing : " +_missingDateController.text);
-    print("last location : " +_lastLocation .text);
+    print("Name: " + _name.text);
+    print("Number: " + _contact.text);
+    print("DOB: " + _dobController.text);
+    print("Description: " + _discription.text);
+    print("Missing: " + _missingDateController.text);
+    print("Last Location: " + _lastLocation.text);
   }
 
   @override
@@ -106,126 +120,156 @@ class _MissingPersonState extends State<MissingPerson> {
                   SizedBox(height: 10),
                   GestureDetector(
                     onTap: () {
-                      Imgeinput();
+                      _pickImage();
                     },
                     child: Column(
                       children: [
-                        IconButton(
-                          onPressed: () {
-                            Imgeinput();
+                        Stack(
+                          alignment: Alignment.bottomRight,
+                          children: [
+                            CircleAvatar(
+                              backgroundImage: _selectedImage != null
+                                  ? FileImage(File(_selectedImage!.path))
+                                  : _imageUrl != null
+                                      ? NetworkImage(_imageUrl!)
+                                      : const AssetImage(
+                                          "assets/images/Missing/missing_report.png")
+                                  as ImageProvider,
+                              radius: 70,
+                            ),
+                            if (_selectedImage != null || _imageUrl != null)
+                              CircleAvatar(
+                                backgroundColor: Colors.white,
+                                radius: 18,
+                                child: IconButton(
+                                  icon: Icon(
+                                    Icons.edit,
+                                    size: 18,
+                                    color: Colors.black,
+                                  ),
+                                  onPressed: () {
+                                    // Handle edit image
+                                  },
+                                ),
+                              ),
+                          ],
+                        ),
+                        // IconButton(
+                        //   onPressed: () {
+                        //     Imgeinput();
+                        //   },
+                        //   icon: Image.asset(
+                        //     "assets/images/Missing/missing_report.png",
+                        //     width: 100,
+                        //   ),
+                        // ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Column(
+                      children: [
+                        TextFormField(
+                          decoration: InputDecoration(
+                            hintText: 'Name',
+                          ),
+                          controller: _name,
+                        ),
+                        SizedBox(height: 10),
+                        TextFormField(
+                          keyboardType: TextInputType.phone,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(
+                                RegExp(r'[0-9]')),
+                            LengthLimitingTextInputFormatter(10),
+                          ],
+                          decoration: InputDecoration(
+                            labelText: 'Mobile Number',
+                            hintText:
+                                'Enter 10-digit mobile number of missing person',
+                          ),
+                          controller: _contact,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            _selectDate(context);
                           },
-                          icon: Image.asset(
-                            "assets/images/Missing/missing_report.png",
-                            width: 100,
+                          child: AbsorbPointer(
+                            child: TextFormField(
+                              keyboardType: TextInputType.datetime,
+                              controller: _dobController,
+                              decoration: InputDecoration(
+                                labelText: 'Date of Birth',
+                                hintText: 'Date of Birth',
+                              ),
+                              validator: (value) {
+                                if (_dob == null) {
+                                  return 'Please select a date of birth of missing person';
+                                }
+                                return null;
+                              },
+                            ),
                           ),
                         ),
                         SizedBox(height: 10),
+                        TextFormField(
+                          maxLines: 4,
+                          decoration: InputDecoration(
+                            hintText: 'describe the missing person',
+                            labelText: "Description",
+                          ),
+                          controller: _discription,
+                        ),
+                        SizedBox(height: 10),
+                        GestureDetector(
+                          onTap: () {
+                            _selectMissingDate(context);
+                          },
+                          child: AbsorbPointer(
+                            child: TextFormField(
+                              keyboardType: TextInputType.datetime,
+                              controller: _missingDateController,
+                              decoration: InputDecoration(
+                                labelText: "Missing from",
+                                hintText:
+                                    'date from which the person is missing',
+                              ),
+                              validator: (value) {
+                                if (_missingDate == null) {
+                                  return 'Please select the date from which the person has gone missing';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                        TextFormField(
+                          decoration: InputDecoration(
+                            hintText: 'Last known location of the person',
+                            labelText: 'Last location',
+                          ),
+                          controller: _lastLocation,
+                        ),
+                        SizedBox(height: 10),
                         Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Column(
-                            children: [
-                              TextFormField(
-                                decoration: InputDecoration(
-                                  hintText: 'Name',
-                                ),
-                                controller: _name,
-                              ),
-                              SizedBox(height: 10),
-                              TextFormField(
-                                keyboardType: TextInputType.phone,
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.allow(
-                                      RegExp(r'[0-9]')),
-                                  LengthLimitingTextInputFormatter(10),
-                                ],
-                                decoration: InputDecoration(
-                                  labelText: 'Mobile Number',
-                                  hintText:
-                                      'Enter 10-digit mobile number of missing person',
-                                ),
-                                controller: _contact,
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  _selectDate(context);
-                                },
-                                child: AbsorbPointer(
-                                  child: TextFormField(
-                                    keyboardType: TextInputType.datetime,
-                                    controller: _dobController,
-                                    decoration: InputDecoration(
-                                      labelText: 'Date of Birth',
-                                      hintText: 'Date of Birth',
-                                    ),
-                                    validator: (value) {
-                                      if (_dob == null) {
-                                        return 'Please select a date of birth of missing person';
-                                      }
-                                      return null;
-                                    },
-                                  ),
+                          padding: const EdgeInsets.all(10.0),
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: appcolor.primary,
+                              foregroundColor: appcolor.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(8),
                                 ),
                               ),
-                              SizedBox(height: 10),
-                              TextFormField(
-                                maxLines: 4,
-                                decoration: InputDecoration(
-                                  hintText: 'describe the missing person',
-                                  labelText: "Description",
-                                ),
-                                controller: _discription,
-                              ),
-                              SizedBox(height: 10),
-                              GestureDetector(
-                                onTap: () {
-                                  _selectMissingDate(context);
-                                },
-                                child: AbsorbPointer(
-                                  child: TextFormField(
-                                    keyboardType: TextInputType.datetime,
-                                    controller: _missingDateController,
-                                    decoration: InputDecoration(
-                                      labelText: "Missing from",
-                                      hintText:
-                                          'date from which the person is missing',
-                                    ),
-                                    validator: (value) {
-                                      if (_missingDate == null) {
-                                        return 'Please select the date from which the persoin has gone missing';
-                                      }
-                                      return null;
-                                    },
-                                  ),
-                                ),
-                              ),
-                              SizedBox(height: 10),
-                              TextFormField(
-                                decoration: InputDecoration(
-                                  hintText: 'Last known location of the person',
-                                  labelText: 'Last location',
-                                ),
-                                controller: _lastLocation,
-                              ),
-                              SizedBox(height: 10),
-                              Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: appcolor.primary,
-                                    foregroundColor: appcolor.white,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(8),
-                                      ),
-                                    ),
-                                  ),
-                                  onPressed: () {
-                                    submit();
-                                  },
-                                  child: Text("Submit"),
-                                ),
-                              ),
-                            ],
+                            ),
+                            onPressed: () {
+                              submit();
+                            },
+                            child: Text("Submit"),
                           ),
                         ),
                       ],

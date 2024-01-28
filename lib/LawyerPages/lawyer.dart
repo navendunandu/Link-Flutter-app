@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:link/LawyerPages/myCase.dart';
+import 'package:link/LawyerPages/myLawyer.dart';
+import 'package:link/LawyerPages/searchLawyer.dart';
 import 'package:link/main.dart';
 
 class Lawyer extends StatefulWidget {
@@ -51,13 +54,13 @@ class _LawyerState extends State<Lawyer> {
                         Padding(
                           padding: const EdgeInsets.all(15.0),
                           child: GestureDetector(
-                            // onTap: () {
-                            //   Navigator.push(
-                            //       context,
-                            //       MaterialPageRoute(
-                            //         builder: (context) => const Permit(),
-                            //       ));
-                            // },
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const MyLawyer(),
+                                  ));
+                            },
                             child: Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(15),
@@ -95,13 +98,13 @@ class _LawyerState extends State<Lawyer> {
                         Padding(
                           padding: const EdgeInsets.all(15.0),
                           child: GestureDetector(
-                            // onTap: () {
-                            //   Navigator.push(
-                            //       context,
-                            //       MaterialPageRoute(
-                            //         builder: (context) => const Fine(),
-                            //       ));
-                            // },
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const SearchLawyer(),
+                                  ));
+                            },
                             child: Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(15),
@@ -139,13 +142,13 @@ class _LawyerState extends State<Lawyer> {
                         Padding(
                           padding: const EdgeInsets.all(15.0),
                           child: GestureDetector(
-                            // onTap: () {
-                            //   Navigator.push(
-                            //       context,
-                            //       MaterialPageRoute(
-                            //         builder: (context) => const Fine(),
-                            //       ));
-                            // },
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const MyCase(),
+                                  ));
+                            },
                             child: Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(15),

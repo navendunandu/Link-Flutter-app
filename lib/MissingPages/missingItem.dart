@@ -4,14 +4,14 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:link/main.dart';
 
-class MissingPet extends StatefulWidget {
-  const MissingPet({Key? key}) : super(key: key);
+class MissingItem extends StatefulWidget {
+  const MissingItem({Key? key}) : super(key: key);
 
   @override
-  State<MissingPet> createState() => _MissingPetState();
+  State<MissingItem> createState() => _MissingItemState();
 }
 
-class _MissingPetState extends State<MissingPet> {
+class _MissingItemState extends State<MissingItem> {
   void Imgeinput() {
     print("Image: ");
   }
@@ -79,7 +79,7 @@ class _MissingPetState extends State<MissingPet> {
           ),
         ),
         title: const Text(
-          "MissingPet",
+          "MissingItem",
           style: TextStyle(color: Colors.white, fontSize: 30),
         ),
       ),
@@ -116,7 +116,7 @@ class _MissingPetState extends State<MissingPet> {
                                     : _imageUrl != null
                                         ? NetworkImage(_imageUrl!)
                                         : const AssetImage(
-                                            "assets/images/Missing/missing_pet.png",
+                                            "assets/images/Missing/missingItem.png",
                                           ) as ImageProvider,
                                 radius: 70,
                               ),
@@ -148,7 +148,7 @@ class _MissingPetState extends State<MissingPet> {
                         children: [
                           TextFormField(
                             decoration: const InputDecoration(
-                              hintText: 'Pet name',
+                              hintText: 'Missing item',
                             ),
                             controller: _name,
                           ),
@@ -180,16 +180,16 @@ class _MissingPetState extends State<MissingPet> {
                               LengthLimitingTextInputFormatter(2)
                             ],
                             decoration: const InputDecoration(
-                              labelText: 'Age of pet',
-                              hintText: 'Age of pet',
+                              labelText: 'Category',
+                              hintText: 'Category of Item',
                             ),
                           ),
                           const SizedBox(height: 10),
                           TextFormField(
                             maxLines: 4,
                             decoration: const InputDecoration(
-                              hintText: 'describe the missing pet',
-                              labelText: "Description of pet",
+                              hintText: 'describe the missing Item',
+                              labelText: "Description",
                             ),
                             controller: _discription,
                           ),

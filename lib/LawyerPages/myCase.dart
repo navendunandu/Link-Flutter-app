@@ -1,18 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:link/MissingPages/missingItem.dart';
-import 'package:link/MissingPages/missingPerson.dart';
-import 'package:link/MissingPages/missingPet.dart';
 import 'package:link/main.dart';
 
-class Missing extends StatefulWidget {
-  const Missing({super.key});
+class MyCase extends StatefulWidget {
+  const MyCase({super.key});
 
   @override
-  State<Missing> createState() => _MissingState();
+  State<MyCase> createState() => _MyCaseState();
 }
 
-class _MissingState extends State<Missing> {
+class _MyCaseState extends State<MyCase> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +27,7 @@ class _MissingState extends State<Missing> {
               size: 30,
             ),
           ),
-          title: Text("MISSING PERSON",
+          title: Text("MyCase",
               style: TextStyle(color: appcolor.white, fontSize: 30)),
         ),
         body: SingleChildScrollView(
@@ -54,13 +51,13 @@ class _MissingState extends State<Missing> {
                         Padding(
                           padding: const EdgeInsets.all(15.0),
                           child: GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const MissingPerson(),
-                                  ));
-                            },
+                            // onTap: () {
+                            //   Navigator.push(
+                            //       context,
+                            //       MaterialPageRoute(
+                            //         builder: (context) => const Permit(),
+                            //       ));
+                            // },
                             child: Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(15),
@@ -79,101 +76,13 @@ class _MissingState extends State<Missing> {
                                 child: Row(
                                   children: [
                                     Image.asset(
-                                      "assets/images/Missing/missing_person.png",
-                                      width: 100,
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child:Text(
-                                        " Missing Person",
-                                        style: TextStyle(fontSize: 20),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const MissingPet(),
-                                  ));
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.2),
-                                    blurRadius: 7,
-                                    spreadRadius: 3,
-                                    offset: Offset(0, 2),
-                                  )
-                                ],
-                                color: appcolor.white,
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(15.0),
-                                child: Row(
-                                  children: [
-                                    Image.asset(
-                                      "assets/images/Missing/pet.png",
+                                      "assets/images/MyCase/myMyCase.png",
                                       width: 100,
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Text(
-                                        " Missing Pet",
-                                        style: TextStyle(fontSize: 20),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const MissingItem(),
-                                  ));
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.2),
-                                    blurRadius: 7,
-                                    spreadRadius: 3,
-                                    offset: Offset(0, 2),
-                                  )
-                                ],
-                                color: appcolor.white,
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(15.0),
-                                child: Row(
-                                  children: [
-                                    Image.asset(
-                                      "assets/images/Missing/items.png",
-                                      width: 100,
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                        " Missing Belonging",
+                                        " My MyCase ",
                                         style: TextStyle(fontSize: 20),
                                       ),
                                     ),
@@ -211,13 +120,13 @@ class _MissingState extends State<Missing> {
                                 child: Row(
                                   children: [
                                     Image.asset(
-                                      "assets/images/Missing/found.png",
+                                      "assets/images/MyCase/searchMyCase.png",
                                       width: 100,
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Text(
-                                        " Report Found",
+                                        " Search MyCase",
                                         style: TextStyle(fontSize: 20),
                                       ),
                                     ),
@@ -227,6 +136,51 @@ class _MissingState extends State<Missing> {
                             ),
                           ),
                         ),
+                        Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: GestureDetector(
+                            // onTap: () {
+                            //   Navigator.push(
+                            //       context,
+                            //       MaterialPageRoute(
+                            //         builder: (context) => const Fine(),
+                            //       ));
+                            // },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.2),
+                                    blurRadius: 7,
+                                    spreadRadius: 3,
+                                    offset: Offset(0, 2),
+                                  )
+                                ],
+                                color: appcolor.white,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(15.0),
+                                child: Row(
+                                  children: [
+                                    Image.asset(
+                                      "assets/images/MyCase/MyCase.png",
+                                      width: 100,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        " My Case",
+                                        style: TextStyle(fontSize: 20),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        
                       ],
                     )
                   ]),

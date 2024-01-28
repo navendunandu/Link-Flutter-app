@@ -1,5 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:link/PermitPages/EventPermit.dart';
+import 'package:link/PermitPages/aprovedPermit.dart';
+import 'package:link/PermitPages/buldingPermit.dart';
+import 'package:link/PermitPages/paradePermit.dart';
+import 'package:link/PermitPages/soundPermit.dart';
+import 'package:link/PermitPages/travelPermit.dart';
 import 'package:link/main.dart';
 
 class Permit extends StatefulWidget {
@@ -52,13 +58,13 @@ class _PermitState extends State<Permit> {
                         Padding(
                           padding: const EdgeInsets.all(15.0),
                           child: GestureDetector(
-                            // onTap: () {
-                            //   Navigator.push(
-                            //       context,
-                            //       MaterialPageRoute(
-                            //         builder: (context) => const Permit(),
-                            //       ));
-                            // },
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const EventPermit(),
+                                  ));
+                            },
                             child: Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(15),
@@ -96,13 +102,13 @@ class _PermitState extends State<Permit> {
                         Padding(
                           padding: const EdgeInsets.all(15.0),
                           child: GestureDetector(
-                            // onTap: () {
-                            //   Navigator.push(
-                            //       context,
-                            //       MaterialPageRoute(
-                            //         builder: (context) => const Fine(),
-                            //       ));
-                            // },
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const TravelPermit(),
+                                  ));
+                            },
                             child: Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(15),
@@ -140,13 +146,13 @@ class _PermitState extends State<Permit> {
                         Padding(
                           padding: const EdgeInsets.all(15.0),
                           child: GestureDetector(
-                            // onTap: () {
-                            //   Navigator.push(
-                            //       context,
-                            //       MaterialPageRoute(
-                            //         builder: (context) => const Fine(),
-                            //       ));
-                            // },
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const SoundPermit(),
+                                  ));
+                            },
                             child: Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(15),
@@ -184,13 +190,13 @@ class _PermitState extends State<Permit> {
                         Padding(
                           padding: const EdgeInsets.all(15.0),
                           child: GestureDetector(
-                            // onTap: () {
-                            //   Navigator.push(
-                            //       context,
-                            //       MaterialPageRoute(
-                            //         builder: (context) => const Fine(),
-                            //       ));
-                            // },
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const BuildingPermit(),
+                                  ));
+                            },
                             child: Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(15),
@@ -228,13 +234,13 @@ class _PermitState extends State<Permit> {
                         Padding(
                           padding: const EdgeInsets.all(15.0),
                           child: GestureDetector(
-                            // onTap: () {
-                            //   Navigator.push(
-                            //       context,
-                            //       MaterialPageRoute(
-                            //         builder: (context) => const Fine(),
-                            //       ));
-                            // },
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const ParadePermit(),
+                                  ));
+                            },
                             child: Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(15),
@@ -272,13 +278,13 @@ class _PermitState extends State<Permit> {
                         Padding(
                           padding: const EdgeInsets.all(15.0),
                           child: GestureDetector(
-                            // onTap: () {
-                            //   Navigator.push(
-                            //       context,
-                            //       MaterialPageRoute(
-                            //         builder: (context) => const Fine(),
-                            //       ));
-                            // },
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const AprovedPermit(),
+                                  ));
+                            },
                             child: Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(15),

@@ -32,16 +32,17 @@ class _LoginState extends State<Login> {
     print(_password.text);
 
     if (_name.text == _password.text) {
-      Navigator.pushReplacement(context, 
-      MaterialPageRoute(builder: (context)=>Dashboard()));
-  }
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => Dashboard()));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          automaticallyImplyLeading: false, // Add this line to disable the leading icon
+        automaticallyImplyLeading:
+            false, // Add this line to disable the leading icon
 
         title: Padding(
           padding: const EdgeInsets.all(35.0),

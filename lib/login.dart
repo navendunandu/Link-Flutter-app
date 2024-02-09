@@ -87,7 +87,7 @@ class _LoginState extends State<Login> {
                 ),
               ),
               Text("The Complete Legal App",
-                  style: TextStyle(fontSize: 26, color: appcolor.text2)),
+                  style: TextStyle(fontSize: 32, color: appcolor.text2)),
               SizedBox(
                 height: 100,
               ),

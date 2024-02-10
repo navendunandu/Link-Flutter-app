@@ -37,30 +37,6 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   automaticallyImplyLeading: false,
-      //   title: Padding(
-      //     padding: const EdgeInsets.all(35.0),
-      //     child: Column(
-      //       crossAxisAlignment: CrossAxisAlignment.start,
-      //       children: [
-      //         Text(
-      //           "Welcome To Link",
-      //           style: TextStyle(
-      //             color: const Color.fromRGBO(21, 101, 192, 1),
-      //             fontWeight: FontWeight.w800,
-      //             fontSize: 40,
-      //           ),
-      //         ),
-      //         Text(
-      //           "the complete legal app",
-      //           style: TextStyle(color: Colors.black54, fontSize: 17),
-      //         ),
-      //       ],
-      //     ),
-      //   ),
-      //   toolbarHeight: 125,
-      // ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(35.0),
@@ -73,7 +49,7 @@ class _LoginState extends State<Login> {
               Text(
                 "Wlelcome To",
                 style: TextStyle(
-                  color: const Color.fromRGBO(21, 101, 192, 1),
+                  color: appcolor.text2,
                   fontWeight: FontWeight.w800,
                   fontSize: 50,
                 ),
@@ -81,46 +57,55 @@ class _LoginState extends State<Login> {
               Text(
                 "Link",
                 style: TextStyle(
-                  color: const Color.fromRGBO(21, 101, 192, 1),
+                  color: appcolor.text,
                   fontWeight: FontWeight.w800,
                   fontSize: 160,
                 ),
               ),
-              Text("The Complete Legal App",
-                  style: TextStyle(fontSize: 32, color: appcolor.text2)),
               SizedBox(
                 height: 100,
               ),
               TextFormField(
                 decoration: InputDecoration(
-                    hintText: "Username",
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: appcolor.primary),
-                        borderRadius: BorderRadius.all(Radius.circular(8)))),
+                  fillColor: appcolor.accent,
+                  filled: true,
+                  hintText: "Username",
+                  border: OutlineInputBorder(
+                    
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: appcolor.primary),
+                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                  ),
+                ),
+                
                 controller: _name,
               ),
               SizedBox(height: 30),
               TextFormField(
                 obscureText: _obs_text,
                 decoration: InputDecoration(
-                    hintText: "Password",
-                    suffixIcon: InkWell(
-                      child: Icon(Icons.remove_red_eye_outlined),
-                      onTap: () {
-                        setState(() {
-                          _obs_text = !_obs_text;
-                        });
-                      },
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: appcolor.primary),
-                        borderRadius: BorderRadius.all(Radius.circular(8)))),
+                  fillColor: appcolor.accent,
+                  filled: true,
+                  hintText: "Password",
+                  suffixIcon: InkWell(
+                    child: Icon(Icons.remove_red_eye_outlined),
+                    onTap: () {
+                      setState(() {
+                        _obs_text = !_obs_text;
+                      });
+                    },
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: appcolor.white)
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: appcolor.primary),
+                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                  ),
+                ),
                 controller: _password,
               ),
               SizedBox(height: 30),
@@ -134,14 +119,13 @@ class _LoginState extends State<Login> {
                     child: Text(
                       "Forgotten password",
                       style: TextStyle(
-                        color: Colors.blue,
+                        color: appcolor.text2,
                         fontWeight: FontWeight.w800,
                       ),
                     ),
                   ),
                 ],
               ),
-              SizedBox(height: 20),
               SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -158,7 +142,7 @@ class _LoginState extends State<Login> {
                         child: Text(
                           "Register",
                           style: TextStyle(
-                            color: Colors.blueAccent,
+                            color: appcolor.secondary,
                             fontSize: 17,
                             fontWeight: FontWeight.w600,
                           ),
@@ -176,9 +160,7 @@ class _LoginState extends State<Login> {
                       ),
                     ),
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                        const Color.fromRGBO(21, 101, 192, 1),
-                      ),
+                      backgroundColor: MaterialStateProperty.all<Color>(appcolor.primary),
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5.0),
@@ -187,7 +169,7 @@ class _LoginState extends State<Login> {
                     ),
                   ),
                 ],
-              )
+              ),
             ],
           ),
         ),

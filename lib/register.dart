@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:link/login.dart';
+import 'package:link/main.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -89,6 +90,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
+        surfaceTintColor: appcolor.white,
         title: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(
@@ -97,7 +99,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               Text(
                 "Welcome To Link",
                 style: TextStyle(
-                  color: const Color.fromRGBO(21, 101, 192, 1),
+                  color: appcolor.text,
                   fontWeight: FontWeight.w800,
                   fontSize: 40,
                 ),
@@ -270,7 +272,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all<Color>(
-                        const Color.fromRGBO(21, 101, 192, 1)),
+                        appcolor.primary),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5.0),
@@ -293,7 +295,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       child: Text(
                         "Login ",
                         style: TextStyle(
-                          color: Colors.blueAccent,
+                          color: appcolor.primary,
                           fontSize: 17,
                           fontWeight: FontWeight.w600,
                         ),

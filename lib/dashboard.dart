@@ -33,7 +33,7 @@ class Dashboard extends StatelessWidget {
                 SizedBox(height: 10),
                 Text(
                   "Get the help you need, when you  need it.",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400 ,color: appcolor.text2),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800 ,color: appcolor.secondary),
                 ),
               ],
             ),
@@ -409,11 +409,13 @@ class Dashboard extends StatelessWidget {
                                 ),
                               ],
                             ),
+                            SizedBox(height: 30),
                           ],
                         ),
                       ),
                     ),
                   ),
+                  
                 ),
                 
                 Container(
@@ -421,7 +423,7 @@ class Dashboard extends StatelessWidget {
                   child: Row(
                     children: [
                       SizedBox(
-                        height: 22,
+                        height: 41,
                       )
                     ],
                   ),

@@ -20,7 +20,7 @@ class Dashboard extends StatelessWidget {
       body: CustomScrollView(
         slivers: <Widget>[
           SliverAppBar(
-            toolbarHeight: 180,
+            toolbarHeight: 120,
             automaticallyImplyLeading: false,
             pinned: false, 
             title: Column(
@@ -60,7 +60,7 @@ class Dashboard extends StatelessWidget {
                         topLeft: Radius.circular(30),
                         topRight: Radius.circular(30),
                       ),
-                      color: appcolor.secondary,
+                      color: appcolor.text,
                     ),
                     child: Padding(
                       padding: const EdgeInsets.only(top: 40, bottom: 40, right: 20, left: 20),
@@ -97,7 +97,7 @@ class Dashboard extends StatelessWidget {
                                     child: Container(
                                       decoration: BoxDecoration(
                                         color: appcolor.red,
-                                        borderRadius: BorderRadius.circular(8),
+                                        borderRadius: BorderRadius.circular(15),
                                         boxShadow: [
                                           BoxShadow(
                                             color: Color(0xFF000000).withOpacity(0.1),
@@ -131,7 +131,7 @@ class Dashboard extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  decoration: BoxDecoration(color: appcolor.secondary),
+                  decoration: BoxDecoration(color: appcolor.text),
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadiusDirectional.circular(20),
@@ -168,23 +168,18 @@ class Dashboard extends StatelessWidget {
                                             offset: Offset(0, 2),
                                           ),
                                         ],
-                                        color: appcolor.white,
+                                        color: appcolor.text,
                                       ),
                                       child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
+                                        padding: const EdgeInsets.all(15.0),
                                         child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
-                                            Row(
-                                              children: [
-                                                Image.asset(
-                                                  "assets/images/Dashboard/missing.png",
-                                                  width: 100,
-                                                ),
-                                                SizedBox(width: 40,)
-                                              ],
+                                            Image.asset(
+                                              "assets/images/Dashboard/missing.png",
+                                              width: 100,
                                             ),
-                                            Text("MISSING" 
-                                             ),
+                                            Text("MISSING" ,style:TextStyle(color: appcolor.white) ),
                                           ],
                                         ),
                                       ),
@@ -216,18 +211,12 @@ class Dashboard extends StatelessWidget {
                                         color: appcolor.white,
                                       ),
                                       child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
+                                        padding: const EdgeInsets.all(15.0),
                                         child: Column(
                                           children: [
-                                            Row(
-                                              children: [
-                                                Image.asset(
-                                                  "assets/images/Dashboard/lawyer.png",
-                                                  width: 100,
-                                                ),
-                                                
-                                                SizedBox(width: 40,)
-                                              ],
+                                            Image.asset(
+                                              "assets/images/Dashboard/lawyer.png",
+                                              width: 100,
                                             ),
                                             Text("LAWYER"),
                                           ],
@@ -254,7 +243,7 @@ class Dashboard extends StatelessWidget {
                                     },
                                     child: Container(
                                       decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(8),
+                                        borderRadius: BorderRadius.circular(15),
                                         boxShadow: [
                                           BoxShadow(
                                             color: Colors.black.withOpacity(0.2),
@@ -266,17 +255,12 @@ class Dashboard extends StatelessWidget {
                                         color: appcolor.white,
                                       ),
                                       child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
+                                        padding: const EdgeInsets.all(15.0),
                                         child: Column(
                                           children: [
-                                            Row(
-                                              children: [
-                                                Image.asset(
-                                                  "assets/images/Dashboard/permit.png",
-                                                  width: 100,
-                                                ),                                                SizedBox(width: 40,)
-
-                                              ],
+                                            Image.asset(
+                                              "assets/images/Dashboard/permit.png",
+                                              width: 100,
                                             ),
                                             Text("PERMIT"),
                                           ],
@@ -298,7 +282,7 @@ class Dashboard extends StatelessWidget {
                                     },
                                     child: Container(
                                       decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(8),
+                                        borderRadius: BorderRadius.circular(15),
                                         boxShadow: [
                                           BoxShadow(
                                             color: Colors.black.withOpacity(0.2),
@@ -310,17 +294,12 @@ class Dashboard extends StatelessWidget {
                                         color: appcolor.white,
                                       ),
                                       child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
+                                        padding: const EdgeInsets.all(15.0),
                                         child: Column(
                                           children: [
-                                            Row(
-                                              children: [
-                                                Image.asset(
-                                                  "assets/images/Dashboard/fine.png",
-                                                  width: 100,
-                                                ),                                                SizedBox(width: 40,)
-
-                                              ],
+                                            Image.asset(
+                                              "assets/images/Dashboard/fine.png",
+                                              width: 100,
                                             ),
                                             Text("FINE"),
                                           ],
@@ -347,7 +326,7 @@ class Dashboard extends StatelessWidget {
                                     },
                                     child: Container(
                                       decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(8),
+                                        borderRadius: BorderRadius.circular(15),
                                         boxShadow: [
                                           BoxShadow(
                                             color: Colors.black.withOpacity(0.2),
@@ -359,17 +338,12 @@ class Dashboard extends StatelessWidget {
                                         color: appcolor.white,
                                       ),
                                       child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
+                                        padding: const EdgeInsets.all(15.0),
                                         child: Column(
                                           children: [
-                                            Row(
-                                              children: [
-                                                Image.asset(
-                                                  "assets/images/Dashboard/fileCase.png",
-                                                  width: 100,
-                                                ),                                                SizedBox(width: 40,)
-
-                                              ],
+                                            Image.asset(
+                                              "assets/images/Dashboard/fileCase.png",
+                                              width: 100,
                                             ),
                                             Text("CASE"),
                                           ],
@@ -391,7 +365,7 @@ class Dashboard extends StatelessWidget {
                                     },
                                     child: Container(
                                       decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(8),
+                                        borderRadius: BorderRadius.circular(15),
                                         boxShadow: [
                                           BoxShadow(
                                             color: Colors.black.withOpacity(0.2),
@@ -403,17 +377,12 @@ class Dashboard extends StatelessWidget {
                                         color: appcolor.white,
                                       ),
                                       child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
+                                        padding: const EdgeInsets.all(15.0),
                                         child: Column(
                                           children: [
-                                            Row(
-                                              children: [
-                                                Image.asset(
-                                                  "assets/images/Dashboard/alert-em.png",
-                                                  width: 100,
-                                                ),                                                SizedBox(width: 40,)
-
-                                              ],
+                                            Image.asset(
+                                              "assets/images/Dashboard/alert-em.png",
+                                              width: 100,
                                             ),
                                             Text("EMERGENCY"),
                                           ],

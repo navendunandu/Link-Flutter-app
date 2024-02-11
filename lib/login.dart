@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:link/dashboard.dart';
 import 'package:link/main.dart';
 import 'package:link/register.dart';
@@ -38,44 +37,45 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Padding(
-          padding: const EdgeInsets.all(35.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Welcome To Link",
-                style: TextStyle(
-                  color: const Color.fromRGBO(21, 101, 192, 1),
-                  fontWeight: FontWeight.w800,
-                  fontSize: 40,
-                ),
-              ),
-              Text(
-                "the complete legal app",
-                style: TextStyle(color: Colors.black54, fontSize: 17),
-              ),
-            ],
-          ),
-        ),
-        toolbarHeight: 125,
-      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(35.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-             
+              SizedBox(
+                height: 60,
+              ),
+              Text(
+                "Wlelcome To",
+                style: TextStyle(
+                  color: appcolor.text2,
+                  fontWeight: FontWeight.w800,
+                  fontSize: 50,
+                ),
+              ),
+              Text(
+                "Link",
+                style: TextStyle(
+                  color: appcolor.text,
+                  fontWeight: FontWeight.w800,
+                  fontSize: 160,
+                ),
+              ),
+              SizedBox(
+                height: 100,
+              ),
               TextFormField(
                 decoration: InputDecoration(
                   hintText: "Username",
                   border: OutlineInputBorder(
+                    borderSide: BorderSide(color: appcolor.accent),
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: appcolor.primary))
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: appcolor.primary),
+                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                  ),
                 ),
                 controller: _name,
               ),
@@ -95,8 +95,10 @@ class _LoginState extends State<Login> {
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
-                                    focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: appcolor.primary))
-
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: appcolor.primary),
+                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                  ),
                 ),
                 controller: _password,
               ),
@@ -111,7 +113,7 @@ class _LoginState extends State<Login> {
                     child: Text(
                       "Forgotten password",
                       style: TextStyle(
-                        color: Colors.blue,
+                        color: appcolor.text2,
                         fontWeight: FontWeight.w800,
                       ),
                     ),
@@ -119,44 +121,49 @@ class _LoginState extends State<Login> {
                 ],
               ),
               SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: login,
-                child: Text(
-                  "Login",
-                  style: TextStyle(color: Colors.white),
-                ),
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(
-                    const Color.fromRGBO(21, 101, 192, 1),
-                  ),
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 20),
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Text(
-                    "Don't have an account? ",
-                    style: TextStyle(fontSize: 17),
+                  Row(
+                    children: [
+                      Text(
+                        "New Here ? ",
+                        style: TextStyle(fontSize: 17),
+                      ),
+                      GestureDetector(
+                        onTap: redirectToRegister,
+                        child: Text(
+                          "Register",
+                          style: TextStyle(
+                            color: appcolor.secondary,
+                            fontSize: 17,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  GestureDetector(
-                    onTap: redirectToRegister,
-                    child: Text(
-                      "Signup now!",
-                      style: TextStyle(
-                        color: Colors.blueAccent,
-                        fontSize: 17,
-                        fontWeight: FontWeight.w600,
+                  ElevatedButton(
+                    onPressed: login,
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Text(
+                        "Login",
+                        style: TextStyle(color: Colors.white, fontSize: 18),
+                      ),
+                    ),
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(appcolor.primary),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
                       ),
                     ),
                   ),
                 ],
-              )
+              ),
             ],
           ),
         ),

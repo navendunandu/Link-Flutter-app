@@ -8,11 +8,18 @@ environment:
 
 dependencies:
   
+  cloud_firestore: ^4.15.5
+  file_picker: ^6.1.1
+  firebase_auth: ^4.17.4
+  firebase_core: ^2.25.4
+  firebase_storage: ^11.6.6
   flutter:
     sdk: flutter
   flutter_svg: ^2.0.9
-  image_picker: ^1.0.6
+  fluttertoast: ^8.2.4
+  image_picker: ^1.0.7
   lottie: ^2.7.0
+  progress_dialog_null_safe: ^2.0.0
 
 dev_dependencies:
   flutter_test:

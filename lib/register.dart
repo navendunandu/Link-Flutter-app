@@ -1,5 +1,14 @@
+import 'dart:io';
+
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:link/login.dart';
+import 'package:progress_dialog_null_safe/progress_dialog_null_safe.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -9,23 +18,6 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  List<String> district = [
-    "Thiruvananthapuram",
-    "Kollam",
-    "Pathanamthitta",
-    "Alappuzha",
-    "Kottayam",
-    "Idukki",
-    "Ernakulam",
-    "Thrissur",
-    "Palakkad",
-    "Malappuram",
-    "Kozhikode",
-    "Wayanad",
-    "Kannur",
-    "Kasaragod"
-  ];
-
   final TextEditingController _firstName = TextEditingController();
   final TextEditingController _lastName = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
@@ -35,13 +27,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _dobController = TextEditingController();
   final TextEditingController _aadharNumberController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
-  final TextEditingController _districtController = TextEditingController();
   final TextEditingController _placeController = TextEditingController();
   final TextEditingController _pincodeController = TextEditingController();
+
+  late ProgressDialog _progressDialog;
+
   bool _obs_text = true;
+  List<Map<String, dynamic>> distList = [];
+  List<Map<String, dynamic>> placesList = [];
 
   String? gender;
   String? selectedDistrict;
+  String? selectedPlace;
+  String? filePath;
+  XFile? _selectedImage;
+  String? _imageUrl;
 
   void redirectToLogin() {
     Navigator.push(
@@ -50,7 +50,80 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  void register() {
+  Future<void> _pickImage() async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setState(() {
+        _selectedImage = XFile(pickedFile.path);
+      });
+    }
+  }
+
+  Future<void> _pickFile() async {
+    try {
+      FilePickerResult? result = await FilePicker.platform.pickFiles();
+
+      if (result != null) {
+        setState(() {
+          filePath = result.files.single.path;
+        });
+      } else {
+        print('File picking canceled.');
+      }
+    } catch (e) {
+      print('Error picking file: $e');
+    }
+  }
+
+  Future<void> fetchDistData() async {
+    try {
+      QuerySnapshot<Map<String, dynamic>> querySnapshot =
+          await FirebaseFirestore.instance.collection('districts').get();
+
+      List<Map<String, dynamic>> dist = querySnapshot.docs
+          .map((doc) => {
+                'id': doc.id,
+                'district': doc['district'].toString(),
+              })
+          .toList();
+
+      setState(() {
+        distList = dist;
+      });
+      print(dist);
+    } catch (e) {
+      print('Error fetching department data: $e');
+    }
+  }
+
+  Future<void> fetchPlaceData(distId) async {
+    placesList = [];
+    selectedPlace = null;
+    print(distId);
+    try {
+      QuerySnapshot<Map<String, dynamic>> querySnapshot1 =
+          await FirebaseFirestore.instance
+              .collection('Place')
+              .where('District', isEqualTo: distId)
+              .get();
+      List<Map<String, dynamic>> placeList = querySnapshot1.docs
+          .map((doc) => {
+                'id': doc.id,
+                'place': doc['Place'].toString(),
+              })
+          .toList();
+      setState(() {
+        placesList = placeList;
+      });
+      print(placesList);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void register() async {
     print("Registering...");
     print("Name: ${_firstName.text} ${_lastName.text}");
     print("Email: ${_emailController.text}");
@@ -61,27 +134,148 @@ class _RegisterScreenState extends State<RegisterScreen> {
     print("Gender: $gender");
     print("Aadhar Number: ${_aadharNumberController.text}");
     print("Address: ${_addressController.text}");
-    print("District: $selectedDistrict");
-    print("Place: ${_placeController.text}");
-    print("Pin Code: ${_pincodeController.text}");
 
-    // Clear all the controllers
+    print("Place: $selectedPlace");
+    print("Pin Code: ${_pincodeController.text}");
+auth();
+    setState(() {
+      gender = null;
+    });
+  }
+
+  void auth() async {
+    try {
+      _progressDialog.show();
+      UserCredential userCredential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+
+      if (userCredential != null) {
+        print('usr');
+        await _storeUserData(userCredential.user!.uid);
+        Fluttertoast.showToast(
+          msg: "Registration Successful",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+        );
+        _progressDialog.hide();
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => Login()),
+        );
+      }
+    } catch (e) {
+      _progressDialog.hide();
+      Fluttertoast.showToast(
+        msg: "Registration Failed",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+      print("Error registering user: $e");
+      // Handle error, show message, or take appropriate action
+    }
+  }
+
+  _storeUserData(String userId) async {
+    try {
+      final FirebaseFirestore firestore = FirebaseFirestore.instance;
+print("trying to insert to db ");
+      await firestore.collection('collection_user').doc(userId).set({
+        "user_name": "hello",
+        "user_email": _emailController.text,
+        "user_mobile": _phoneNumberController.text,
+        "user_address": _addressController.text,
+        "user_gender": gender,
+        "user_place": selectedPlace,
+        "user_dob": _dobController.text,
+        // Add more fields as needed
+      });
+      await _uploadImage(userId);
+
+      
+    } catch (e) {
+      print(e);
+    }
+  }
+  Future<void> _uploadImage(String userId) async {
+    try {
+      if (_selectedImage != null) {
+        Reference ref =
+            FirebaseStorage.instance.ref().child('User_Photo/$userId.jpg');
+        UploadTask uploadTask = ref.putFile(File(_selectedImage!.path));
+        TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
+
+        String imageUrl = await taskSnapshot.ref.getDownloadURL();
+
+        await FirebaseFirestore.instance
+            .collection('collection_user')
+            .doc(userId)
+            .update({
+          'Student_photo': imageUrl,
+        });
+      }
+
+      if (filePath != null) {
+        //FileUpload
+        // Step 1: Get the file name from the path
+        String fileName = filePath!.split('/').last;
+
+        // Step 2: Upload file to Firebase Storage with the original file name
+        Reference fileRef = FirebaseStorage.instance
+            .ref()
+            .child('idProof/$userId/$fileName');
+        UploadTask fileUploadTask = fileRef.putFile(File(filePath!));
+        TaskSnapshot fileTaskSnapshot =
+            await fileUploadTask.whenComplete(() => null);
+
+        // Step 3: Get download URL of the uploaded file
+        String fileUrl = await fileTaskSnapshot.ref.getDownloadURL();
+
+        // Step 4: Update user's collection in Firestore with the file URL
+        await FirebaseFirestore.instance
+            .collection('collection_user')
+            .doc(userId)
+            .update({
+          'Student_file': fileUrl,
+        });
+      }
+      clear();
+    } catch (e) {
+      print("Error uploading image: $e");
+      // Handle error, show message or take appropriate action
+    }
+    }
+
+  void clear() {
+    gender = null;
+    selectedDistrict = null;
+    selectedPlace = null;
+    placesList = [];
+    filePath = null;
+    _selectedImage = null;
     _firstName.clear();
     _lastName.clear();
     _emailController.clear();
-    _passwordController.clear();
     _phoneNumberController.clear();
     _dobController.clear();
     _aadharNumberController.clear();
     _addressController.clear();
-    _districtController.clear();
     _placeController.clear();
     _pincodeController.clear();
+    _passwordController.clear();
+    _confirmPasswordController.clear();
+  }
 
-    setState(() {
-      gender = null;
-      selectedDistrict = null;
-    });
+  void initState() {
+    super.initState();
+    fetchDistData();
+    _progressDialog = ProgressDialog(context);
   }
 
   @override
@@ -119,6 +313,45 @@ class _RegisterScreenState extends State<RegisterScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                GestureDetector(
+                  onTap: () {
+                    _pickImage();
+                  },
+                  child: Column(
+                    children: [
+                      Stack(
+                        alignment: Alignment.bottomRight,
+                        children: [
+                          CircleAvatar(
+                            backgroundImage: _selectedImage != null
+                                ? FileImage(File(_selectedImage!.path))
+                                : _imageUrl != null
+                                    ? NetworkImage(_imageUrl!)
+                                    : const AssetImage(
+                                            "assets/images/Missing/missing_report.png")
+                                        as ImageProvider,
+                            radius: 70,
+                          ),
+                          if (_selectedImage != null || _imageUrl != null)
+                            CircleAvatar(
+                              backgroundColor: Colors.white,
+                              radius: 18,
+                              child: IconButton(
+                                icon: Icon(
+                                  Icons.edit,
+                                  size: 18,
+                                  color: Colors.black,
+                                ),
+                                onPressed: () {
+                                  // Handle edit image
+                                },
+                              ),
+                            ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
                 Row(
                   children: [
                     Expanded(
@@ -140,16 +373,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 SizedBox(height: 16),
                 TextFormField(
                   controller: _emailController,
+                  keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(labelText: "Email"),
                 ),
                 SizedBox(height: 16),
                 TextFormField(
                   controller: _phoneNumberController,
+                  keyboardType: TextInputType.phone,
                   decoration: InputDecoration(labelText: "Phone Number"),
                 ),
                 SizedBox(height: 16),
                 TextFormField(
                   controller: _dobController,
+                                    keyboardType: TextInputType.datetime,
+
                   decoration: InputDecoration(labelText: "Date of Birth"),
                 ),
                 SizedBox(height: 16),
@@ -190,7 +427,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
                 TextFormField(
                   controller: _aadharNumberController,
+                  keyboardType: TextInputType.number,
                   decoration: InputDecoration(labelText: "Aadhar Number"),
+                ),
+                SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: _pickFile,
+                  child: Text('Upload File'),
                 ),
                 SizedBox(height: 16),
                 TextFormField(
@@ -207,13 +450,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     Flexible(
                       child: DropdownButtonFormField<String>(
                         value: selectedDistrict,
-                        items: district.map((String district) {
-                          return DropdownMenuItem<String>(
-                            value: district,
-                            child: Text(district),
-                          );
-                        }).toList(),
+                        items: distList.map<DropdownMenuItem<String>>(
+                          (Map<String, dynamic> dist) {
+                            return DropdownMenuItem<String>(
+                              value: dist['id'],
+                              child: Text(dist['district']),
+                            );
+                          },
+                        ).toList(),
                         onChanged: (String? value) {
+                          fetchPlaceData(value);
                           setState(() {
                             selectedDistrict = value!;
                           });
@@ -223,13 +469,37 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ],
                 ),
                 SizedBox(height: 16),
-                TextFormField(
-                  controller: _placeController,
-                  decoration: InputDecoration(labelText: "Place"),
+                Row(
+                  children: [
+                    Text("Place"),
+                    SizedBox(
+                      width: 15,
+                    ),
+                    Flexible(
+                      child: DropdownButtonFormField<String>(
+                        value: selectedPlace,
+                        items: placesList.map<DropdownMenuItem<String>>(
+                          (Map<String, dynamic> place) {
+                            return DropdownMenuItem<String>(
+                              value: place['id'],
+                              child: Text(place['place']),
+                            );
+                          },
+                        ).toList(),
+                        onChanged: (String? value) {
+                          setState(() {
+                            selectedPlace = value!;
+                          });
+                        },
+                      ),
+                    ),
+                  ],
                 ),
+                SizedBox(height: 16),
                 SizedBox(height: 16),
                 TextFormField(
                   controller: _pincodeController,
+                  keyboardType: TextInputType.number,
                   decoration: InputDecoration(labelText: "Pin Code"),
                 ),
                 SizedBox(height: 16),
@@ -245,7 +515,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         },
                       )),
                   controller: _passwordController,
-                ),SizedBox(height: 16),
+                ),
+                SizedBox(height: 16),
                 TextFormField(
                   obscureText: _obs_text,
                   decoration: InputDecoration(

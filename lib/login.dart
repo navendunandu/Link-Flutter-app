@@ -46,12 +46,14 @@ class _LoginState extends State<Login> {
         email: _name.text,
         password: _password.text,
       );
+      clear();
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => Dashboard()),
       );
       if (userCredential.user != null) {}
     } catch (e) {
+      clear();
       // Handle login failure and show an error toast.
         _progressDialog.hide();
         String errorMessage = 'Login failed';
@@ -70,6 +72,10 @@ class _LoginState extends State<Login> {
     }
 
     
+  }
+  void clear(){
+    _name.clear();
+    _password.clear();
   }
 
   @override

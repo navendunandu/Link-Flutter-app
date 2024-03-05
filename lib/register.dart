@@ -46,7 +46,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   void redirectToLogin() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => Login()),
+      MaterialPageRoute(builder: (context) => const Login()),
     );
   }
 
@@ -165,8 +165,9 @@ auth();
         _progressDialog.hide();
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => Login()),
+          MaterialPageRoute(builder: (context) => const Login()),
         );
+        print("push ");
       }
     } catch (e) {
       _progressDialog.hide();
@@ -270,6 +271,7 @@ print("trying to insert to db ");
     _pincodeController.clear();
     _passwordController.clear();
     _confirmPasswordController.clear();
+    
   }
 
   void initState() {
@@ -283,15 +285,15 @@ print("trying to insert to db ");
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Padding(
-          padding: const EdgeInsets.all(20.0),
+        title: const Padding(
+          padding: EdgeInsets.all(20.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 "Welcome To Link",
                 style: TextStyle(
-                  color: const Color.fromRGBO(21, 101, 192, 1),
+                  color: Color.fromRGBO(21, 101, 192, 1),
                   fontWeight: FontWeight.w800,
                   fontSize: 40,
                 ),
@@ -337,7 +339,7 @@ print("trying to insert to db ");
                               backgroundColor: Colors.white,
                               radius: 18,
                               child: IconButton(
-                                icon: Icon(
+                                icon: const Icon(
                                   Icons.edit,
                                   size: 18,
                                   color: Colors.black,
@@ -357,46 +359,46 @@ print("trying to insert to db ");
                     Expanded(
                       child: TextFormField(
                         controller: _firstName,
-                        decoration: InputDecoration(labelText: "Full Name"),
+                        decoration: const InputDecoration(labelText: "Full Name"),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 15,
                     ),
                     Expanded(
                         child: TextFormField(
                       controller: _lastName,
-                      decoration: InputDecoration(labelText: "Last name"),
+                      decoration: const InputDecoration(labelText: "Last name"),
                     ))
                   ],
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 TextFormField(
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(labelText: "Email"),
+                  decoration: const InputDecoration(labelText: "Email"),
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 TextFormField(
                   controller: _phoneNumberController,
                   keyboardType: TextInputType.phone,
-                  decoration: InputDecoration(labelText: "Phone Number"),
+                  decoration: const InputDecoration(labelText: "Phone Number"),
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 TextFormField(
                   controller: _dobController,
                                     keyboardType: TextInputType.datetime,
 
-                  decoration: InputDecoration(labelText: "Date of Birth"),
+                  decoration: const InputDecoration(labelText: "Date of Birth"),
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 Row(
                   children: [
-                    Text("Gender : "),
-                    SizedBox(
+                    const Text("Gender : "),
+                    const SizedBox(
                       width: 28,
                     ),
-                    Text("Male"),
+                    const Text("Male"),
                     Radio(
                         value: "male",
                         groupValue: gender,
@@ -405,7 +407,7 @@ print("trying to insert to db ");
                             gender = value!;
                           });
                         }),
-                    Text("Femlae"),
+                    const Text("Femlae"),
                     Radio(
                         value: "Female",
                         groupValue: gender,
@@ -414,7 +416,7 @@ print("trying to insert to db ");
                             gender = value!;
                           });
                         }),
-                    Text("Other"),
+                    const Text("Other"),
                     Radio(
                         value: "Other",
                         groupValue: gender,
@@ -428,23 +430,23 @@ print("trying to insert to db ");
                 TextFormField(
                   controller: _aadharNumberController,
                   keyboardType: TextInputType.number,
-                  decoration: InputDecoration(labelText: "Aadhar Number"),
+                  decoration: const InputDecoration(labelText: "Aadhar Number"),
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: _pickFile,
-                  child: Text('Upload File'),
+                  child: const Text('Upload File'),
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 TextFormField(
                   controller: _addressController,
-                  decoration: InputDecoration(labelText: "Address"),
+                  decoration: const InputDecoration(labelText: "Address"),
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 Row(
                   children: [
-                    Text("District"),
-                    SizedBox(
+                    const Text("District"),
+                    const SizedBox(
                       width: 15,
                     ),
                     Flexible(
@@ -468,11 +470,11 @@ print("trying to insert to db ");
                     ),
                   ],
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 Row(
                   children: [
-                    Text("Place"),
-                    SizedBox(
+                    const Text("Place"),
+                    const SizedBox(
                       width: 15,
                     ),
                     Flexible(
@@ -495,20 +497,20 @@ print("trying to insert to db ");
                     ),
                   ],
                 ),
-                SizedBox(height: 16),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
+                const SizedBox(height: 16),
                 TextFormField(
                   controller: _pincodeController,
                   keyboardType: TextInputType.number,
-                  decoration: InputDecoration(labelText: "Pin Code"),
+                  decoration: const InputDecoration(labelText: "Pin Code"),
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 TextFormField(
                   obscureText: _obs_text,
                   decoration: InputDecoration(
                       hintText: "Password",
                       suffix: InkWell(
-                        child: Icon(Icons.remove_red_eye_outlined),
+                        child: const Icon(Icons.remove_red_eye_outlined),
                         onTap: () {
                           _obs_text = !_obs_text;
                           setState(() {});
@@ -516,13 +518,13 @@ print("trying to insert to db ");
                       )),
                   controller: _passwordController,
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 TextFormField(
                   obscureText: _obs_text,
                   decoration: InputDecoration(
                       hintText: "Confirm password",
                       suffix: InkWell(
-                        child: Icon(Icons.remove_red_eye_outlined),
+                        child: const Icon(Icons.remove_red_eye_outlined),
                         onTap: () {
                           _obs_text = !_obs_text;
                           setState(() {});
@@ -530,12 +532,12 @@ print("trying to insert to db ");
                       )),
                   controller: _confirmPasswordController,
                 ),
-                SizedBox(height: 24),
+                const SizedBox(height: 24),
                 ElevatedButton(
                   onPressed: () {
                     register();
                   },
-                  child: Text(
+                  child: const Text(
                     "Register",
                     style: TextStyle(color: Colors.white),
                   ),
@@ -552,16 +554,16 @@ print("trying to insert to db ");
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 50,
                     ),
-                    Text(
+                    const Text(
                       "already joined ? ",
                       style: TextStyle(fontSize: 17),
                     ),
                     GestureDetector(
                       onTap: redirectToLogin,
-                      child: Text(
+                      child: const Text(
                         "Login ",
                         style: TextStyle(
                           color: Colors.blueAccent,

@@ -1,7 +1,12 @@
+import 'dart:developer';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:link/dashboard.dart';
 import 'package:link/main.dart';
 import 'package:link/register.dart';
+import 'package:progress_dialog_null_safe/progress_dialog_null_safe.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key});
@@ -14,6 +19,13 @@ class _LoginState extends State<Login> {
   final TextEditingController _name = TextEditingController();
   final TextEditingController _password = TextEditingController();
   bool _obs_text = true;
+  late ProgressDialog _progressDialog;
+
+  @override
+  void initState() {
+    super.initState();
+    _progressDialog = ProgressDialog(context);
+  }
 
   void redirectToRegister() {
     Navigator.push(
@@ -22,16 +34,42 @@ class _LoginState extends State<Login> {
     );
   }
 
-  void login() {
+  Future<void> login() async {
     print(_name.text);
     print(_password.text);
+          _progressDialog.show();
 
-    if (_name.text == _password.text) {
+    try {
+      log("login");
+      final FirebaseAuth auth = FirebaseAuth.instance;
+      UserCredential userCredential = await auth.signInWithEmailAndPassword(
+        email: _name.text,
+        password: _password.text,
+      );
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => Dashboard()),
       );
+      if (userCredential.user != null) {}
+    } catch (e) {
+      // Handle login failure and show an error toast.
+        _progressDialog.hide();
+        String errorMessage = 'Login failed';
+
+        if (e is FirebaseAuthException) {
+          errorMessage = e.code;
+        }
+
+        Fluttertoast.showToast(
+          msg: errorMessage,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+        );
     }
+
+    
   }
 
   @override
@@ -154,7 +192,8 @@ class _LoginState extends State<Login> {
                       ),
                     ),
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(appcolor.primary),
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(appcolor.primary),
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5.0),

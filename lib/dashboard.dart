@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:link/CasePages/case.dart';
 import 'package:link/EmergencyPages/emergency.dart';
@@ -7,13 +9,42 @@ import 'package:link/main.dart';
 import 'package:link/MissingPages/missing.dart';
 import 'package:link/PermitPages/permit.dart';
 
-class Dashboard extends StatelessWidget {
+class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
 
-  void emergency() {
-    print("Emergency");
+  @override
+  State<Dashboard> createState() => _DashboardState();
+}
+
+class _DashboardState extends State<Dashboard> {
+  String name = "User";
+  String pic = '';
+  @override
+  void initState() {
+    super.initState();
+    loadData();
   }
 
+  void loadData() async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        final uid = user.uid;
+        final userData = await FirebaseFirestore.instance
+            .collection('collection_user')
+            .doc(uid)
+            .get();
+        setState(() {
+          name = userData['user_name'];
+          pic = userData['user_photo'];
+        });
+      }
+    } catch (e) {
+      print('Error loading user data: $e');
+    }
+  }
+
+  // Widget build() method remains unchanged
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,18 +53,24 @@ class Dashboard extends StatelessWidget {
           SliverAppBar(
             toolbarHeight: 180,
             automaticallyImplyLeading: false,
-            pinned: false, 
+            pinned: false,
             title: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   "LINK",
-                  style: TextStyle(fontSize: 60, fontWeight: FontWeight.w600, color: appcolor.text),
+                  style: TextStyle(
+                      fontSize: 60,
+                      fontWeight: FontWeight.w600,
+                      color: appcolor.text),
                 ),
                 SizedBox(height: 10),
                 Text(
                   "Get the help you need, when you  need it.",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400 ,color: appcolor.text2),
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                      color: appcolor.text2),
                 ),
               ],
             ),
@@ -48,8 +85,6 @@ class Dashboard extends StatelessWidget {
               )
             ],
           ),
-
-          
           SliverList(
             delegate: SliverChildListDelegate(
               [
@@ -63,27 +98,50 @@ class Dashboard extends StatelessWidget {
                       color: appcolor.secondary,
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.only(top: 40, bottom: 40, right: 20, left: 20),
+                      padding: const EdgeInsets.only(
+                          top: 40, bottom: 40, right: 20, left: 20),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Icon(
-                            Icons.account_circle,
-                            size: 60,
-                            color: appcolor.white,
-                          ),
+                          pic != ""
+                              ? ClipRRect(
+                                  borderRadius: BorderRadius.circular(
+                                      40), // Adjust the radius as needed
+                                  child: Image.network(
+                                    pic,
+                                    height: 80,
+                                    width: 80,
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (BuildContext context,
+                                        Object error, StackTrace? stackTrace) {
+                                      return Icon(
+                                        Icons.error,
+                                        color: Colors
+                                            .red, // You can customize the color of the error icon
+                                        size: 80,
+                                      );
+                                    },
+                                  ))
+                              : Icon(
+                                  Icons.account_circle,
+                                  size: 80,
+                                  color: appcolor.white,
+                                ),
                           Flexible(
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.only(left: 10),
-                                  child: Text(
-                                    "User name",
-                                    style: TextStyle(
-                                      color: appcolor.white,
-                                      fontSize: 26,
-                                      fontWeight: FontWeight.w500,
+                                  child: Container(
+                                    constraints: BoxConstraints(maxWidth: 125),
+                                    child: Text(
+                                      name,
+                                      style: TextStyle(
+                                        color: appcolor.white,
+                                        fontSize: 26,
+                                        fontWeight: FontWeight.w500,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -91,8 +149,9 @@ class Dashboard extends StatelessWidget {
                                   padding: const EdgeInsets.only(right: 8),
                                   child: TextButton(
                                     onPressed: () async {
-                                      await Future.delayed(Duration(seconds: 5));
-                                      emergency();
+                                      await Future.delayed(
+                                          Duration(seconds: 5));
+                                      Emergency();
                                     },
                                     child: Container(
                                       decoration: BoxDecoration(
@@ -100,7 +159,8 @@ class Dashboard extends StatelessWidget {
                                         borderRadius: BorderRadius.circular(8),
                                         boxShadow: [
                                           BoxShadow(
-                                            color: Color(0xFF000000).withOpacity(0.1),
+                                            color: Color(0xFF000000)
+                                                .withOpacity(0.1),
                                             offset: Offset(3, 3),
                                             blurRadius: 0,
                                             spreadRadius: 2,
@@ -113,9 +173,12 @@ class Dashboard extends StatelessWidget {
                                           children: [
                                             Text(
                                               "EMERGENCY",
-                                              style: TextStyle(color: appcolor.white, fontWeight: FontWeight.w600),
+                                              style: TextStyle(
+                                                  color: appcolor.white,
+                                                  fontWeight: FontWeight.w600),
                                             ),
-                                            Text("hold for 5 seconds", style: TextStyle(fontSize: 9)),
+                                            Text("hold for 5 seconds",
+                                                style: TextStyle(fontSize: 9)),
                                           ],
                                         ),
                                       ),
@@ -162,7 +225,8 @@ class Dashboard extends StatelessWidget {
                                         borderRadius: BorderRadius.circular(8),
                                         boxShadow: [
                                           BoxShadow(
-                                            color: Colors.black.withOpacity(0.2),
+                                            color:
+                                                Colors.black.withOpacity(0.2),
                                             blurRadius: 7,
                                             spreadRadius: 3,
                                             offset: Offset(0, 2),
@@ -180,11 +244,12 @@ class Dashboard extends StatelessWidget {
                                                   "assets/images/Dashboard/missing.png",
                                                   width: 100,
                                                 ),
-                                                SizedBox(width: 40,)
+                                                SizedBox(
+                                                  width: 40,
+                                                )
                                               ],
                                             ),
-                                            Text("MISSING" 
-                                             ),
+                                            Text("MISSING"),
                                           ],
                                         ),
                                       ),
@@ -207,7 +272,8 @@ class Dashboard extends StatelessWidget {
                                         borderRadius: BorderRadius.circular(8),
                                         boxShadow: [
                                           BoxShadow(
-                                            color: Colors.black.withOpacity(0.2),
+                                            color:
+                                                Colors.black.withOpacity(0.2),
                                             blurRadius: 7,
                                             spreadRadius: 3,
                                             offset: Offset(0, 2),
@@ -225,8 +291,9 @@ class Dashboard extends StatelessWidget {
                                                   "assets/images/Dashboard/lawyer.png",
                                                   width: 100,
                                                 ),
-                                                
-                                                SizedBox(width: 40,)
+                                                SizedBox(
+                                                  width: 40,
+                                                )
                                               ],
                                             ),
                                             Text("LAWYER"),
@@ -257,7 +324,8 @@ class Dashboard extends StatelessWidget {
                                         borderRadius: BorderRadius.circular(8),
                                         boxShadow: [
                                           BoxShadow(
-                                            color: Colors.black.withOpacity(0.2),
+                                            color:
+                                                Colors.black.withOpacity(0.2),
                                             blurRadius: 7,
                                             spreadRadius: 3,
                                             offset: Offset(0, 2),
@@ -274,8 +342,10 @@ class Dashboard extends StatelessWidget {
                                                 Image.asset(
                                                   "assets/images/Dashboard/permit.png",
                                                   width: 100,
-                                                ),                                                SizedBox(width: 40,)
-
+                                                ),
+                                                SizedBox(
+                                                  width: 40,
+                                                )
                                               ],
                                             ),
                                             Text("PERMIT"),
@@ -301,7 +371,8 @@ class Dashboard extends StatelessWidget {
                                         borderRadius: BorderRadius.circular(8),
                                         boxShadow: [
                                           BoxShadow(
-                                            color: Colors.black.withOpacity(0.2),
+                                            color:
+                                                Colors.black.withOpacity(0.2),
                                             blurRadius: 7,
                                             spreadRadius: 3,
                                             offset: Offset(0, 2),
@@ -318,8 +389,10 @@ class Dashboard extends StatelessWidget {
                                                 Image.asset(
                                                   "assets/images/Dashboard/fine.png",
                                                   width: 100,
-                                                ),                                                SizedBox(width: 40,)
-
+                                                ),
+                                                SizedBox(
+                                                  width: 40,
+                                                )
                                               ],
                                             ),
                                             Text("FINE"),
@@ -350,7 +423,8 @@ class Dashboard extends StatelessWidget {
                                         borderRadius: BorderRadius.circular(8),
                                         boxShadow: [
                                           BoxShadow(
-                                            color: Colors.black.withOpacity(0.2),
+                                            color:
+                                                Colors.black.withOpacity(0.2),
                                             blurRadius: 7,
                                             spreadRadius: 3,
                                             offset: Offset(0, 2),
@@ -367,8 +441,10 @@ class Dashboard extends StatelessWidget {
                                                 Image.asset(
                                                   "assets/images/Dashboard/fileCase.png",
                                                   width: 100,
-                                                ),                                                SizedBox(width: 40,)
-
+                                                ),
+                                                SizedBox(
+                                                  width: 40,
+                                                )
                                               ],
                                             ),
                                             Text("CASE"),
@@ -385,7 +461,8 @@ class Dashboard extends StatelessWidget {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => const Emergency(),
+                                          builder: (context) =>
+                                              const Emergency(),
                                         ),
                                       );
                                     },
@@ -394,7 +471,8 @@ class Dashboard extends StatelessWidget {
                                         borderRadius: BorderRadius.circular(8),
                                         boxShadow: [
                                           BoxShadow(
-                                            color: Colors.black.withOpacity(0.2),
+                                            color:
+                                                Colors.black.withOpacity(0.2),
                                             blurRadius: 7,
                                             spreadRadius: 3,
                                             offset: Offset(0, 2),
@@ -411,8 +489,10 @@ class Dashboard extends StatelessWidget {
                                                 Image.asset(
                                                   "assets/images/Dashboard/alert-em.png",
                                                   width: 100,
-                                                ),                                                SizedBox(width: 40,)
-
+                                                ),
+                                                SizedBox(
+                                                  width: 40,
+                                                )
                                               ],
                                             ),
                                             Text("EMERGENCY"),
@@ -430,7 +510,6 @@ class Dashboard extends StatelessWidget {
                     ),
                   ),
                 ),
-                
                 Container(
                   decoration: BoxDecoration(color: appcolor.secondary),
                   child: Row(

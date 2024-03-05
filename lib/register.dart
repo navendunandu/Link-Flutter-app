@@ -163,10 +163,7 @@ auth();
           textColor: Colors.white,
         );
         _progressDialog.hide();
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const Login()),
-        );
+        login();
         print("push ");
       }
     } catch (e) {
@@ -182,13 +179,19 @@ auth();
       // Handle error, show message, or take appropriate action
     }
   }
+  void login(){
+    Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const Login()),
+        );
+  }
 
   _storeUserData(String userId) async {
     try {
       final FirebaseFirestore firestore = FirebaseFirestore.instance;
 print("trying to insert to db ");
       await firestore.collection('collection_user').doc(userId).set({
-        "user_name": "hello",
+        "user_name": _firstName.text + " " + _lastName.text,
         "user_email": _emailController.text,
         "user_mobile": _phoneNumberController.text,
         "user_address": _addressController.text,
@@ -218,7 +221,7 @@ print("trying to insert to db ");
             .collection('collection_user')
             .doc(userId)
             .update({
-          'Student_photo': imageUrl,
+          'user_photo': imageUrl,
         });
       }
 
@@ -243,7 +246,7 @@ print("trying to insert to db ");
             .collection('collection_user')
             .doc(userId)
             .update({
-          'Student_file': fileUrl,
+          'user_adhar': fileUrl,
         });
       }
       clear();

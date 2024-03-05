@@ -8,7 +8,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:link/login.dart';
-import 'package:progress_dialog_null_safe/progress_dialog_null_safe.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -285,15 +284,15 @@ print("trying to insert to db ");
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: const Padding(
-          padding: EdgeInsets.all(20.0),
+        title: Padding(
+          padding: const EdgeInsets.all(20.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 "Welcome To Link",
                 style: TextStyle(
-                  color: Color.fromRGBO(21, 101, 192, 1),
+                  color: const Color.fromRGBO(21, 101, 192, 1),
                   fontWeight: FontWeight.w800,
                   fontSize: 40,
                 ),
@@ -543,7 +542,7 @@ print("trying to insert to db ");
                   ),
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all<Color>(
-                        const Color.fromRGBO(21, 101, 192, 1)),
+                        appcolor.primary),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5.0),
@@ -566,7 +565,7 @@ print("trying to insert to db ");
                       child: const Text(
                         "Login ",
                         style: TextStyle(
-                          color: Colors.blueAccent,
+                          color: appcolor.primary,
                           fontSize: 17,
                           fontWeight: FontWeight.w600,
                         ),

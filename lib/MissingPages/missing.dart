@@ -18,7 +18,7 @@ class _MissingState extends State<Missing> {
     return Scaffold(
         appBar: AppBar(
           toolbarHeight: 80,
-          backgroundColor: appcolor.text,
+          backgroundColor: appcolor.secondary,
           surfaceTintColor: appcolor.secondary,
           leading: IconButton(
             onPressed: () {
@@ -35,11 +35,13 @@ class _MissingState extends State<Missing> {
         ),
         body: SingleChildScrollView(
           child: Container(
-            decoration: BoxDecoration(color: appcolor.text),
+            decoration: BoxDecoration(color: appcolor.secondary),
             child: Container(
               
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(30)),
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(30)),
                   color: appcolor.white,
                 ),
                 child: Padding(
@@ -61,7 +63,7 @@ class _MissingState extends State<Missing> {
                             },
                             child: Container(
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
+                                borderRadius: BorderRadius.circular(15),
                                 boxShadow: [
                                   BoxShadow(
                                     color: Colors.black.withOpacity(0.2),
@@ -70,26 +72,22 @@ class _MissingState extends State<Missing> {
                                     offset: Offset(0, 2),
                                   )
                                 ],
-                                color: appcolor.text,
+                                color: appcolor.white,
                               ),
                               child: Padding(
-                                padding: const EdgeInsets.all(10.0),
+                                padding: const EdgeInsets.all(15.0),
                                 child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
-                                    Column(
-                                      children: [
-                                        Icon(Icons.account_box_rounded,color: appcolor.white,size: 100,),
-                                        Row(
-                                          children: [
-                                            SizedBox(width: 20,),
-                                            Text(
-                                              " Missing Person",
-                                              style: TextStyle(fontSize: 20,color: appcolor.white),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
+                                    Image.asset(
+                                      "assets/images/Missing/missing_person.png",
+                                      width: 100,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child:Text(
+                                        " Missing Person",
+                                        style: TextStyle(fontSize: 20),
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -109,7 +107,7 @@ class _MissingState extends State<Missing> {
                             },
                             child: Container(
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
+                                borderRadius: BorderRadius.circular(15),
                                 boxShadow: [
                                   BoxShadow(
                                     color: Colors.black.withOpacity(0.2),
@@ -118,26 +116,22 @@ class _MissingState extends State<Missing> {
                                     offset: Offset(0, 2),
                                   )
                                 ],
-                                color: appcolor.text,
+                                color: appcolor.white,
                               ),
                               child: Padding(
-                                padding: const EdgeInsets.all(10.0),
+                                padding: const EdgeInsets.all(15.0),
                                 child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
-                                    Column(
-                                      children: [
-                                        Icon(Icons.pets_sharp,color: appcolor.white,size: 100,),
-                                        Row(
-                                          children: [
-                                            SizedBox(width: 20,),
-                                            Text(
-                                              " Missing Pet",
-                                              style: TextStyle(fontSize: 20,color: appcolor.white),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
+                                    Image.asset(
+                                      "assets/images/Missing/pet.png",
+                                      width: 100,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        " Missing Pet",
+                                        style: TextStyle(fontSize: 20),
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -157,7 +151,7 @@ class _MissingState extends State<Missing> {
                             },
                             child: Container(
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
+                                borderRadius: BorderRadius.circular(15),
                                 boxShadow: [
                                   BoxShadow(
                                     color: Colors.black.withOpacity(0.2),
@@ -166,26 +160,22 @@ class _MissingState extends State<Missing> {
                                     offset: Offset(0, 2),
                                   )
                                 ],
-                                color: appcolor.text,
+                                color: appcolor.white,
                               ),
                               child: Padding(
-                                padding: const EdgeInsets.all(10.0),
+                                padding: const EdgeInsets.all(15.0),
                                 child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
-                                    Column(
-                                      children: [
-                                        Icon(Icons.wallet,color: appcolor.white,size: 100,),
-                                        Row(
-                                          children: [
-                                            SizedBox(width: 20,),
-                                            Text(
-                                              " Missing Item",
-                                              style: TextStyle(fontSize: 20,color: appcolor.white),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
+                                    Image.asset(
+                                      "assets/images/Missing/items.png",
+                                      width: 100,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        " Missing Belonging",
+                                        style: TextStyle(fontSize: 20),
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -205,7 +195,7 @@ class _MissingState extends State<Missing> {
                             // },
                             child: Container(
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
+                                borderRadius: BorderRadius.circular(15),
                                 boxShadow: [
                                   BoxShadow(
                                     color: Colors.black.withOpacity(0.2),
@@ -214,34 +204,29 @@ class _MissingState extends State<Missing> {
                                     offset: Offset(0, 2),
                                   )
                                 ],
-                                color: appcolor.text,
+                                color: appcolor.white,
                               ),
                               child: Padding(
-                                padding: const EdgeInsets.all(10.0),
+                                padding: const EdgeInsets.all(15.0),
                                 child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
-                                    Column(
-                                      children: [
-                                        Icon(Icons.search,color: appcolor.white,size: 100,),
-                                        Row(
-                                          children: [
-                                            SizedBox(width: 30,),
-                                            Text(
-                                              " Report Found",
-                                              style: TextStyle(fontSize: 20,color: appcolor.white),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
+                                    Image.asset(
+                                      "assets/images/Missing/found.png",
+                                      width: 100,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        " Report Found",
+                                        style: TextStyle(fontSize: 20),
+                                      ),
                                     ),
                                   ],
                                 ),
                               ),
                             ),
                           ),
-                        ),                        SizedBox(height: 10,),
-
+                        ),
                       ],
                     )
                   ]),

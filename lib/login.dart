@@ -111,12 +111,10 @@ class _LoginState extends State<Login> {
               ),
               TextFormField(
                 decoration: InputDecoration(
-                  fillColor: appcolor.accent,
-                  filled: true,
                   hintText: "Username",
                   border: OutlineInputBorder(
+                    borderSide: BorderSide(color: appcolor.accent),
                     borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide.none,
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: appcolor.primary),
@@ -129,8 +127,6 @@ class _LoginState extends State<Login> {
               TextFormField(
                 obscureText: _obs_text,
                 decoration: InputDecoration(
-                  fillColor: appcolor.accent,
-                  filled: true,
                   hintText: "Password",
                   suffixIcon: InkWell(
                     child: Icon(Icons.remove_red_eye_outlined),
@@ -142,7 +138,6 @@ class _LoginState extends State<Login> {
                   ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide.none,
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: appcolor.primary),

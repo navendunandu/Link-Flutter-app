@@ -122,6 +122,7 @@ class _LoginState extends State<Login> {
                   ),
                 ),
                 controller: _name,
+                keyboardType: TextInputType.emailAddress, 
               ),
               SizedBox(height: 30),
               TextFormField(
@@ -145,6 +146,7 @@ class _LoginState extends State<Login> {
                   ),
                 ),
                 controller: _password,
+                keyboardType: TextInputType.visiblePassword,
               ),
               SizedBox(height: 30),
               Row(

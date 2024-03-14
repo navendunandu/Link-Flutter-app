@@ -249,7 +249,7 @@ class _DashboardState extends State<Dashboard> {
                                                 )
                                               ],
                                             ),
-                                            Text("MISSING"),
+                                            Text("COMPLAINT"),
                                           ],
                                         ),
                                       ),

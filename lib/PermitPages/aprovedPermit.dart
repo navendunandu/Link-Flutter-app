@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:link/main.dart';
+import 'package:lottie/lottie.dart'; // Import Lottie package
 
 class AprovedPermit extends StatefulWidget {
   const AprovedPermit({Key? key}) : super(key: key);
@@ -24,6 +25,12 @@ class _AprovedPermitState extends State<AprovedPermit> {
     if (_user != null) {
       fetchPermitRequests(_user!.uid);
     }
+    // Delay setting loading to false by 1 second
+    Future.delayed(Duration(seconds: 3), () {
+      setState(() {
+        _loading = false;
+      });
+    });
   }
 
   Future<void> fetchPermitRequests(String userId) async {
@@ -57,7 +64,6 @@ class _AprovedPermitState extends State<AprovedPermit> {
 
       setState(() {
         _permitRequests = filteredPermitRequests;
-        _loading = false; // Set loading to false after data is fetched
       });
     } catch (error) {
       print('Error fetching permit requests: $error');
@@ -85,36 +91,50 @@ class _AprovedPermitState extends State<AprovedPermit> {
           style: TextStyle(color: appcolor.white, fontSize: 30),
         ),
       ),
-      body: _loading
-          ? Center(child: CircularProgressIndicator())
-          : SingleChildScrollView(
-              child: Container(
-                decoration: BoxDecoration(color: appcolor.secondary),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(30),
-                      topRight: Radius.circular(30),
-                    ),
-                    color: appcolor.white,
+      body: Container(
+        decoration: BoxDecoration(color: appcolor.secondary),
+        child: Container(decoration: BoxDecoration(borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(30),
+                topRight: Radius.circular(30),
+              ),
+              color: appcolor.white,),
+          child: _loading
+              ? Center(
+                  child: Lottie.asset(
+                    'assets/checking.json', // Path to your Lottie animation file
+                    width: 300,
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Column(
-                      children: _permitRequests.map((permit) {
-                        return buildPermitContainer(
-                          permit['permitType'].toString(),
-                          permit['permitType  '].toString(), // Use 'title' field here
-                          permit['eventDateEnd'].toString(),
-                          permit['eventDateStart'].toString(),
-                          permit['pStatus'], // No need to convert to string
-                        );
-                      }).toList(),
+                )
+              : SingleChildScrollView(
+                  child: Container(
+                    decoration: BoxDecoration(color: appcolor.secondary),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(30),
+                          topRight: Radius.circular(30),
+                        ),
+                        color: appcolor.white,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Column(
+                          children: _permitRequests.map((permit) {
+                            return buildPermitContainer(
+                              permit['permitType'].toString(),
+                              permit['permitType'].toString(), // Use 'title' field here
+                              permit['eventDateEnd'].toString(),
+                              permit['eventDateStart'].toString(),
+                              permit['pStatus'], // No need to convert to string
+                            );
+                          }).toList(),
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ),
+        ),
+      ),
     );
   }
 
@@ -126,6 +146,7 @@ class _AprovedPermitState extends State<AprovedPermit> {
     dynamic pStatus,
   ) {
     String? imagePath;
+    String? imageName;
     String statusText = ''; // Variable to hold the status text
     Color statusColor = Colors.black; // Variable to hold the status color
 
@@ -133,28 +154,36 @@ class _AprovedPermitState extends State<AprovedPermit> {
     switch (permitType) {
       case "5lC6zB0Z64i0YbIhAAb6":
         imagePath = "assets/images/Permit/event.png";
+        imageName = "Event/Function";
         break;
       case "kBz1iAAIQDxZbK3fR6Sd":
         imagePath = "assets/images/Permit/travel.png";
+        imageName = "Travel";
         break;
       case "7ATAg6F13nPEthpWRbZ5":
         imagePath = "assets/images/Permit/sound.png";
+        imageName = "Sound";
         break;
       case "dCBjsagFc6HDEomHDaGa":
         imagePath = "assets/images/Permit/other.png";
+        imageName = "Other";
         break;
       case "KRYy5zr8RiqmZ0Qm884U":
         imagePath = "assets/images/Permit/dj.png";
+        imageName = "DJ";
         break;
       case "piepHvSTpmaKkbCRa3un":
         imagePath = "assets/images/Permit/construction.png";
+        imageName = "Construction";
         break;
       case "F6ms6SYECJ9FzO9DyKQg":
         imagePath = "assets/images/Permit/parade.png";
+        imageName = "Parade/March";
         break;
       default:
         // Set a default image path if permit type is unknown
         imagePath = "assets/images/Permit/default.webp";
+        imageName = "Error";
     }
 
     // Set status text and color based on pStatus value
@@ -164,6 +193,9 @@ class _AprovedPermitState extends State<AprovedPermit> {
     } else if (pStatus == 1) {
       statusText = 'Approved';
       statusColor = Colors.green;
+    } else if (pStatus == 2) {
+      statusText = 'Rejected';
+      statusColor = Colors.red;
     }
 
     return Padding(
@@ -196,8 +228,11 @@ class _AprovedPermitState extends State<AprovedPermit> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    title ?? '',
-                    style: TextStyle(fontSize: 16),
+                    imageName ?? '',
+                    style: TextStyle(
+                        fontSize: 20,
+                        color: appcolor.text2,
+                        fontWeight: FontWeight.w900),
                   ),
                   SizedBox(
                     height: 5,
@@ -207,9 +242,9 @@ class _AprovedPermitState extends State<AprovedPermit> {
                     style: TextStyle(
                       fontSize: 14,
                     ),
-                  ), // Add some space between title and other details
+                  ),
                   Text(
-                    'Till    : ${eventDateEnd ?? ''}',
+                    'Till: ${eventDateEnd ?? ''}',
                     style: TextStyle(
                       fontSize: 14,
                     ),

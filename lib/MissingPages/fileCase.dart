@@ -5,6 +5,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:lottie/lottie.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:progress_dialog_null_safe/progress_dialog_null_safe.dart';
 
 class Category {
   final String id;
@@ -89,95 +92,109 @@ class _MissingPetState extends State<MissingPet> {
     }
   }
 
- Future<void> _handleSubmit() async {
-  try {
-    String documentURLs = "";
-    // Upload document to Firebase Storage
-    if (_document != null) {
+  Future<void> _handleSubmit(BuildContext context) async {
+    // Validate fields
+    if (!_validateFields()) {
+      return;
+    }
+
+    final ProgressDialog pr = ProgressDialog(context);
+    pr.style(
+      message: 'Submitting...',
+      progressWidget: Lottie.asset(
+        'assets/writing.json',
+        width: 100,
+      ),
+    );
+    pr.show();
+
+    try {
+      String documentURLs = "";
       firebase_storage.Reference storageReference = firebase_storage.FirebaseStorage.instance
           .ref('policeComplaintDocument/${_document!.name}');
       await storageReference.putFile(File(_document!.path));
       documentURLs = await storageReference.getDownloadURL();
+
+      final userId = await fetchUserId();
+
+      _caseCategory = _selectedCategory!;
+      _subCaseCategory = _selectedSubCategory!;
+
+      await FirebaseFirestore.instance.collection('PoliceComplaint').add({
+        'userId': userId,
+        'complainantName': _complainantNameController.text,
+        'contactNumber': _contactNumberController.text,
+        'documentURLs': documentURLs,
+        'caseCategory': _caseCategory,
+        'subCaseCategory': _subCaseCategory,
+        'vStatus': 0,
+        'complaintDescription': _complaintDescriptionController.text,
+        'timestamp': Timestamp.now(),
+      });
+
+      _complainantNameController.clear();
+      _contactNumberController.clear();
+      _complaintDescriptionController.clear();
+      setState(() {
+        _document = null;
+        _caseCategory = "";
+        _subCaseCategory = "";
+        _selectedCategory = null;
+        _selectedSubCategory = null;
+      });
+
+      Fluttertoast.showToast(
+        msg: "Police complaint filed successfully!",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+      );
+
+      Navigator.pushReplacementNamed(context, '/dashboard');
+    } catch (error) {
+      print("Error filing police complaint: $error");
+      Fluttertoast.showToast(
+        msg: "Error filing police complaint. Please try again.",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+    } finally {
+      pr.hide();
     }
-
-    // Get user ID
-    final userId = await fetchUserId();
-
-    // Set the selected category and sub-category values
-    _caseCategory = _selectedCategory ?? "";
-    _subCaseCategory = _selectedSubCategory ?? "";
-
-    // Add police complaint to Firestore
-    await FirebaseFirestore.instance.collection('PoliceComplaint').add({
-      'userId': userId,
-      'complainantName': _complainantNameController.text,
-      'contactNumber': _contactNumberController.text,
-      'documentURLs': documentURLs,
-      'caseCategory': _caseCategory,
-      'subCaseCategory': _subCaseCategory,
-      'vStatus': 0,
-      'complaintDescription': _complaintDescriptionController.text,
-      'timestamp': Timestamp.now(),
-    });
-
-    // Reset form after submission
-    _complainantNameController.clear();
-    _contactNumberController.clear();
-    _complaintDescriptionController.clear();
-    setState(() {
-      _document = null;
-      _caseCategory = "";
-      _subCaseCategory = "";
-      _selectedCategory = null;
-      _selectedSubCategory = null;
-    });
-
-    // Show success message
-    showDialog(
-      context: context,
-      builder: (_) => AlertDialog(
-        title: Text('Success'),
-        content: Text('Police complaint filed successfully!'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text('OK'),
-          ),
-        ],
-      ),
-    );
-  } catch (error) {
-    print("Error filing police complaint: $error");
-    // Show error message
-    showDialog(
-      context: context,
-      builder: (_) => AlertDialog(
-        title: Text('Error'),
-        content: Text('Error filing police complaint. Please try again.'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text('OK'),
-          ),
-        ],
-      ),
-    );
   }
-}
+
+  bool _validateFields() {
+    if (_complainantNameController.text.isEmpty ||
+        _contactNumberController.text.isEmpty ||
+        _complaintDescriptionController.text.isEmpty ||
+        _selectedCategory == null ||
+        _selectedSubCategory == null) {
+      Fluttertoast.showToast(
+        msg: "All fields are required!",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+      return false;
+    }
+    return true;
+  }
 
   Future<String?> fetchUserId() async {
     try {
       final currentUser = FirebaseAuth.instance.currentUser;
       final userId = currentUser?.uid;
 
-      // Fetch user details from Firestore
       final userSnapshot = await FirebaseFirestore.instance
           .collection('collection_user')
           .doc(userId)
           .get();
 
       if (userSnapshot.exists) {
-        // If the user document exists, retrieve the userId field
         final userData = userSnapshot.data() as Map<String, dynamic>;
         final userId = userData['user_Id'];
         return userId;
@@ -281,6 +298,12 @@ class _MissingPetState extends State<MissingPet> {
                             hintText: 'Name',
                           ),
                           controller: _complainantNameController,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Name is required';
+                            }
+                            return null;
+                          },
                         ),
                         const SizedBox(height: 10),
                         TextFormField(
@@ -296,15 +319,27 @@ class _MissingPetState extends State<MissingPet> {
                                 'Enter 10-digit mobile number of pet owner',
                           ),
                           controller: _contactNumberController,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Mobile number is required';
+                            }
+                            return null;
+                          },
                         ),
                         const SizedBox(height: 10),
                         TextFormField(
                           maxLines: 4,
                           decoration: const InputDecoration(
-                            hintText: 'case Detail',
+                            hintText: 'Case Detail',
                             labelText: "Description ",
                           ),
                           controller: _complaintDescriptionController,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Description is required';
+                            }
+                            return null;
+                          },
                         ),
                         const SizedBox(height: 10),
                         DropdownButtonFormField<String>(
@@ -323,6 +358,12 @@ class _MissingPetState extends State<MissingPet> {
                               child: Text(category.name),
                             );
                           }).toList(),
+                          validator: (value) {
+                            if (value == null) {
+                              return 'Category is required';
+                            }
+                            return null;
+                          },
                         ),
                         const SizedBox(height: 10),
                         if (_selectedCategory != null)
@@ -342,6 +383,12 @@ class _MissingPetState extends State<MissingPet> {
                                   );
                                 }).toList() ??
                                 [],
+                            validator: (value) {
+                              if (value == null) {
+                                return 'Sub-Category is required';
+                              }
+                              return null;
+                            },
                           ),
                         const SizedBox(height: 10),
                         Padding(
@@ -356,7 +403,7 @@ class _MissingPetState extends State<MissingPet> {
                                 ),
                               ),
                             ),
-                            onPressed: _handleSubmit,
+                            onPressed: () => _handleSubmit(context),
                             child: const Text("Submit"),
                           ),
                         ),

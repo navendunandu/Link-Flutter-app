@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:link/MissingPages/missingPerson.dart';
-import 'package:link/MissingPages/allCase.dart';
+import 'package:link/MissingPages/fileCase.dart';
 import 'package:link/main.dart';
 
 class Missing extends StatefulWidget {
@@ -29,7 +29,7 @@ class _MissingState extends State<Missing> {
               size: 30,
             ),
           ),
-          title: Text("MISSING PERSON",
+          title: Text("REPORT ",
               style: TextStyle(color: appcolor.white, fontSize: 30)),
         ),
         body: SingleChildScrollView(

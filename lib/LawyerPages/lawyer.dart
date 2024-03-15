@@ -139,50 +139,50 @@ class _LawyerState extends State<Lawyer> {
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const MyCase(),
-                                  ));
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.2),
-                                    blurRadius: 7,
-                                    spreadRadius: 3,
-                                    offset: Offset(0, 2),
-                                  )
-                                ],
-                                color: appcolor.white,
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(15.0),
-                                child: Row(
-                                  children: [
-                                    Image.asset(
-                                      "assets/images/Lawyer/MyCase.png",
-                                      width: 100,
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                        " My Case",
-                                        style: TextStyle(fontSize: 20),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
+                        // Padding(
+                        //   padding: const EdgeInsets.all(15.0),
+                        //   child: GestureDetector(
+                        //     onTap: () {
+                        //       Navigator.push(
+                        //           context,
+                        //           MaterialPageRoute(
+                        //             builder: (context) => const MyCase(),
+                        //           ));
+                        //     },
+                        //     child: Container(
+                        //       decoration: BoxDecoration(
+                        //         borderRadius: BorderRadius.circular(15),
+                        //         boxShadow: [
+                        //           BoxShadow(
+                        //             color: Colors.black.withOpacity(0.2),
+                        //             blurRadius: 7,
+                        //             spreadRadius: 3,
+                        //             offset: Offset(0, 2),
+                        //           )
+                        //         ],
+                        //         color: appcolor.white,
+                        //       ),
+                        //       child: Padding(
+                        //         padding: const EdgeInsets.all(15.0),
+                        //         child: Row(
+                        //           children: [
+                        //             Image.asset(
+                        //               "assets/images/Lawyer/MyCase.png",
+                        //               width: 100,
+                        //             ),
+                        //             Padding(
+                        //               padding: const EdgeInsets.all(8.0),
+                        //               child: Text(
+                        //                 " My Case",
+                        //                 style: TextStyle(fontSize: 20),
+                        //               ),
+                        //             ),
+                        //           ],
+                        //         ),
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
                         
                       ],
                     )

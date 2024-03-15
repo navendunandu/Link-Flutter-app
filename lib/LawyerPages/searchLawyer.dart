@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:link/main.dart';
+import 'package:lottie/lottie.dart';
 
 class SearchLawyer extends StatefulWidget {
   const SearchLawyer({Key? key}) : super(key: key);
@@ -37,6 +39,8 @@ class _SearchLawyerState extends State<SearchLawyer> {
       final specializationSnapshot = await specializationRef.get();
       final specializationMap = Map.fromEntries(specializationSnapshot.docs
           .map((doc) => MapEntry(doc.id, doc.data() as Map<String, dynamic>)));
+
+      await Future.delayed(Duration(seconds: 2)); // Minimum 2 second delay
 
       setState(() {
         _lawyers = lawyersList.map((lawyer) => {
@@ -88,8 +92,8 @@ class _SearchLawyerState extends State<SearchLawyer> {
         );
       } else {
         return ElevatedButton(
-          onPressed: () {
-            handleCancelRequest(lawyerId);
+          onPressed: () async{
+            await handleCancelRequest(userRequest['id']);
           },
           style: ElevatedButton.styleFrom(
             primary: Colors.red,
@@ -99,60 +103,33 @@ class _SearchLawyerState extends State<SearchLawyer> {
       }
     } else {
       return ElevatedButton(
-        onPressed: () {
-          handleRequest(lawyerId);
+        onPressed: () async{
+          await handleRequest(lawyerId);
         },
         child: Text('Request'),
       );
     }
   }
 
-  Future<void> handleRequest(String lawyerId) async {
-    try {
-      final userId = _auth.currentUser!.uid;
-      final existingRequest = _userRequests.firstWhere(
-        (request) => request['lawyerID'] == lawyerId,
-        orElse: () => {},
-      );
+ Future<void> handleRequest(String lawyerId) async {
+  try {
+    final userId = _auth.currentUser!.uid;
+    final existingRequest = _userRequests.firstWhere(
+      (request) => request['lawyerID'] == lawyerId,
+      orElse: () => {},
+    );
 
-      if (existingRequest.isNotEmpty) {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('Request Already Sent'),
-              content: Text('You have already sent a request to this lawyer.'),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text('OK'),
-                ),
-              ],
-            );
-          },
-        );
-        return;
-      }
-
-      await _firestore.collection('Collection_lawyer_connection').add({
-        'userID': userId,
-        'lawyerID': lawyerId,
-        'cStatus': 0,
-      });
-
+    if (existingRequest.isNotEmpty) {
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Request Sent'),
-            content: Text('Request sent successfully!'),
+            title: Text('Request Already Sent'),
+            content: Text('You have already sent a request to this lawyer.'),
             actions: [
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
-                  fetchLawyers(); // Refresh the page
                 },
                 child: Text('OK'),
               ),
@@ -160,135 +137,151 @@ class _SearchLawyerState extends State<SearchLawyer> {
           );
         },
       );
-    } catch (error) {
-      print('Error sending request: $error');
+      return;
     }
-  }
 
-  Future<void> handleCancelRequest(String lawyerId) async {
-    try {
-      final userId = _auth.currentUser!.uid;
-      final request = _userRequests.firstWhere(
-        (request) => request['lawyerID'] == lawyerId,
-        orElse: () => {},
-      );
+    await _firestore.collection('Collection_lawyer_connection').add({
+      'userID': userId,
+      'lawyerID': lawyerId,
+      'cStatus': 0,
+    });
 
-      if (request.isEmpty) {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('No Request Found'),
-              content: Text('No request found to cancel.'),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text('OK'),
-                ),
-              ],
-            );
-          },
+    setState(() {
+      getUserRequests();
+      fetchLawyers();
+    });
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Request Sent'),
+          content: Text('Request sent successfully!'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
         );
-        return;
-      }
-
-      await _firestore
-          .collection('Collection_lawyer_connection')
-          .doc(request['id'])
-          .delete();
-
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Request Cancelled'),
-            content: Text('Request cancelled successfully!'),
-            actions:[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  fetchLawyers(); // Refresh the page
-                },
-                child: Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
-    } catch (error) {
-      print('Error cancelling request: $error');
-    }
+      },
+    );
+  } catch (error) {
+    print('Error sending request: $error');
   }
+}
+
+
+  Future<void> handleCancelRequest(String requestId) async {
+  try {
+    await _firestore
+        .collection('Collection_lawyer_connection')
+        .doc(requestId)
+        .delete();
+
+    setState(() {
+      // Remove the request from _userRequests list
+      _userRequests.removeWhere((request) => request['id'] == requestId);
+    });
+  } catch (error) {
+    print('Error cancelling request: $error');
+  }
+}
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Search Lawyers'),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: TextField(
-                decoration: InputDecoration(
-                  hintText: 'Search by ID',
-                  prefixIcon: Icon(Icons.search),
-                ),
-                onChanged: (value) {
-                  setState(() {
-                    _searchId = value;
-                  });
-                },
-              ),
+          toolbarHeight: 80,
+          backgroundColor: appcolor.secondary,
+          surfaceTintColor: appcolor.secondary,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(
+              Icons.arrow_back_ios_new_sharp,
+              color: appcolor.accent,
+              size: 30,
             ),
-            _loading
-                ? Center(child: CircularProgressIndicator())
-                : _lawyers.isEmpty
-                    ? Center(child: Text('No lawyers found.'))
-                    : ListView.builder(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemCount: _lawyers.length,
-                        itemBuilder: (context, index) {
-                          final lawyer = _lawyers[index];
-                          if (_searchId.isNotEmpty &&
-                              !_lawyers[index]['userId']
-                                  .contains(_searchId)) {
-                            return SizedBox.shrink();
-                          }
-                          return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Card(
-                              elevation: 3,
-                              child: ListTile(
-                                title: Text(lawyer['full_name']),
-                                subtitle: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text('Specialization: ${lawyer['catName']['categoryName']}'),
-                                    Text('Qualification: ${lawyer['qualification']}'),
-                                    Text('ID: ${lawyer['userId']}'),
-                                  ],
+          ),
+          title: Text("My Lawyers",
+              style: TextStyle(color: appcolor.white, fontSize: 30)),
+        ),
+      body: SingleChildScrollView(
+        child: Container(
+          
+          color: appcolor.secondary,
+          child: Container(
+            decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(30)),
+                  color: appcolor.white,
+                ),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      hintText: 'Search by ID',
+                      prefixIcon: Icon(Icons.search),
+                    ),
+                    onChanged: (value) {
+                      setState(() {
+                        _searchId = value;
+                      });
+                    },
+                  ),
+                ),
+                _loading
+                    ? Center(child: Lottie.asset('assets/lawLoading.json', width: 100))
+                    : _lawyers.isEmpty
+                        ? Center(child: Text('No lawyers found.'))
+                        : ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: _lawyers.length,
+                            itemBuilder: (context, index) {
+                              final lawyer = _lawyers[index];
+                              if (_searchId.isNotEmpty &&
+                                  !_lawyers[index]['userId']
+                                      .contains(_searchId)) {
+                                return SizedBox.shrink();
+                              }
+                              return Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Card(
+                                  elevation: 3,
+                                  child: ListTile(
+                                    title: Text(lawyer['full_name']),
+                                    subtitle: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text('Specialization: ${lawyer['catName']['categoryName']}'),
+                                        Text('Qualification: ${lawyer['qualification']}'),
+                                        Text('ID: ${lawyer['userId']}'),
+                                      ],
+                                    ),
+                                    leading: CircleAvatar(
+                                      backgroundImage: NetworkImage(
+                                          lawyer['profile_picture'] ?? ''),
+                                    ),
+                                    trailing: buildRequestButton(lawyer['userId']),
+                                  ),
                                 ),
-                                leading: CircleAvatar(
-                                  backgroundImage: NetworkImage(
-                                      lawyer['profile_picture'] ?? ''),
-                                ),
-                                trailing: buildRequestButton(lawyer['userId']),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-          ],
+                              );
+                            },
+                          ),
+              ],
+            ),
+          ),
         ),
       ),
     );
   }
 }
-
-

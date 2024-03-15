@@ -1,9 +1,15 @@
 import 'dart:io';
-
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:lottie/lottie.dart';
+
 import 'package:link/main.dart';
+import 'package:progress_dialog_null_safe/progress_dialog_null_safe.dart';
 
 class MissingPerson extends StatefulWidget {
   const MissingPerson({Key? key}) : super(key: key);
@@ -71,14 +77,105 @@ class _MissingPersonState extends State<MissingPerson> {
     }
   }
 
-  void submit() {
-    print("Name: " + _name.text);
-    print("Number: " + _contact.text);
-    print("DOB: " + _dobController.text);
-    print("Description: " + _discription.text);
-    print("Missing: " + _missingDateController.text);
-    print("Last Location: " + _lastLocation.text);
+ Future<void> submit(BuildContext context) async {
+  if (_selectedImage == null) {
+    print("Please select a photo");
+    Fluttertoast.showToast(
+        msg: "Please select a photo and  Please try again.",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.red,
+      );
+    return;
   }
+
+  User? user = FirebaseAuth.instance.currentUser;
+  if (user != null) {
+    String userID = user.uid;
+
+    // Show loading animation
+      final ProgressDialog pr = ProgressDialog(context);
+      pr.style(
+        message: 'Submitting...',
+        progressWidget: Lottie.asset(
+          'assets/writing.json',
+          width: 100,
+        ),
+      );
+      pr.show();
+
+    try {
+      // Upload photo to storage with metadata
+      final photoMetadata = SettableMetadata(contentType: 'image/jpeg');
+      final fileStorageRef = FirebaseStorage.instance
+          .ref()
+          .child("missingperson/${DateTime.now().millisecondsSinceEpoch}.jpg");
+      await fileStorageRef.putFile(File(_selectedImage!.path), photoMetadata);
+
+      // Get the download URL of the uploaded photo
+      final photoURL = await fileStorageRef.getDownloadURL();
+
+      // Add missing person report to the database with UserID
+      final missingPersonRef =
+          FirebaseFirestore.instance.collection("MissingPerson");
+      await missingPersonRef.add({
+        "UserID": userID,
+        "missingPersonName": _name.text,
+        "phone": _contact.text,
+        "dob": _dobController.text,
+        "details": _discription.text,
+        "missingFrom": _missingDateController.text,
+        "lastLocation": _lastLocation.text,
+        "photoURL": photoURL,
+        "timestamp": DateTime.now(),
+        "vStatus": 0,
+      });
+
+      // Reset form after submission
+      setState(() {
+        _selectedImage = null;
+        _name.clear();
+        _contact.clear();
+        _dob = null;
+        _dobController.clear();
+        _discription.clear();
+        _missingDate = null;
+        _missingDateController.clear();
+        _lastLocation.clear();
+      });
+
+      // Hide loading animation
+      pr.hide();
+
+      // Show toast message
+      Fluttertoast.showToast(
+        msg: "Submission successful",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+      );
+
+      // Redirect to dashboard
+      Navigator.pushReplacementNamed(context, '/dashboard');
+    } catch (error) {
+      // Hide loading animation
+      pr.hide();
+
+      // print("Error submitting missing person report: $error");
+
+      // Show error toast message
+      // Fluttertoast.showToast(
+      //   msg: "Error submitting report. Please try again.",
+      //   toastLength: Toast.LENGTH_SHORT,
+      //   gravity: ToastGravity.BOTTOM,
+      //   backgroundColor: Colors.red,
+      //   textColor: Colors.white,
+      // );
+    }
+  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -110,8 +207,10 @@ class _MissingPersonState extends State<MissingPerson> {
                 topLeft: Radius.circular(30),
                 topRight: Radius.circular(30),
               ),
+              
               color: Colors.white,
             ),
+            
             child: Padding(
               padding: const EdgeInsets.all(15.0),
               child: Column(
@@ -167,6 +266,7 @@ class _MissingPersonState extends State<MissingPerson> {
                       ],
                     ),
                   ),
+                  Text("Uplaod Images"),
                   SizedBox(height: 10),
                   Padding(
                     padding: const EdgeInsets.all(15.0),
@@ -268,7 +368,7 @@ class _MissingPersonState extends State<MissingPerson> {
                               ),
                             ),
                             onPressed: () {
-                              submit();
+                              submit(context);
                             },
                             child: Text("Submit"),
                           ),

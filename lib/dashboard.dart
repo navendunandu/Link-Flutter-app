@@ -5,6 +5,7 @@ import 'package:link/CasePages/case.dart';
 import 'package:link/EmergencyPages/emergency.dart';
 import 'package:link/FinePages/fine.dart';
 import 'package:link/LawyerPages/lawyer.dart';
+import 'package:link/LawyerPages/myCase.dart';
 import 'package:link/main.dart';
 import 'package:link/MissingPages/missing.dart';
 import 'package:link/PermitPages/permit.dart';
@@ -414,7 +415,7 @@ class _DashboardState extends State<Dashboard> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => const Case(),
+                                          builder: (context) => const MyCase(),
                                         ),
                                       );
                                     },

@@ -1,10 +1,7 @@
-import 'dart:developer';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:link/dashboard.dart';
-import 'package:link/main.dart';
 import 'package:link/register.dart';
 import 'package:progress_dialog_null_safe/progress_dialog_null_safe.dart';
 
@@ -35,12 +32,9 @@ class _LoginState extends State<Login> {
   }
 
   Future<void> login() async {
-    print(_name.text);
-    print(_password.text);
-          _progressDialog.show();
+    _progressDialog.show();
 
     try {
-      log("login");
       final FirebaseAuth auth = FirebaseAuth.instance;
       UserCredential userCredential = await auth.signInWithEmailAndPassword(
         email: _name.text,
@@ -51,29 +45,50 @@ class _LoginState extends State<Login> {
         context,
         MaterialPageRoute(builder: (context) => Dashboard()),
       );
-      if (userCredential.user != null) {}
     } catch (e) {
       clear();
-      // Handle login failure and show an error toast.
-        _progressDialog.hide();
-        String errorMessage = 'Login failed';
+      _progressDialog.hide();
+      String errorMessage = 'Login failed';
 
-        if (e is FirebaseAuthException) {
-          errorMessage = e.code;
-        }
+      if (e is FirebaseAuthException) {
+        errorMessage = e.code;
+      }
 
-        Fluttertoast.showToast(
-          msg: errorMessage,
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-        );
+      Fluttertoast.showToast(
+        msg: errorMessage,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
     }
-
-    
   }
-  void clear(){
+
+  Future<void> handleForgotPassword(String email) async {
+    try {
+      final auth = FirebaseAuth.instance;
+      await auth.sendPasswordResetEmail(email: email);
+      print("Password reset email sent to $email");
+      Fluttertoast.showToast(
+        msg: "Password reset link sent to $email", // Display toast message
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+      );
+    } catch (error) {
+      print('Error sending password reset email: $error');
+      Fluttertoast.showToast(
+        msg: "Error sending password reset email",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+    }
+  }
+
+  void clear() {
     _name.clear();
     _password.clear();
   }
@@ -91,9 +106,9 @@ class _LoginState extends State<Login> {
                 height: 60,
               ),
               Text(
-                "Wlelcome To",
+                "Welcome To",
                 style: TextStyle(
-                  color: appcolor.text2,
+                  color: Colors.black, // Change to your desired color
                   fontWeight: FontWeight.w800,
                   fontSize: 50,
                 ),
@@ -101,7 +116,7 @@ class _LoginState extends State<Login> {
               Text(
                 "Link",
                 style: TextStyle(
-                  color: appcolor.text,
+                  color: Colors.black, // Change to your desired color
                   fontWeight: FontWeight.w800,
                   fontSize: 160,
                 ),
@@ -113,16 +128,16 @@ class _LoginState extends State<Login> {
                 decoration: InputDecoration(
                   hintText: "Username",
                   border: OutlineInputBorder(
-                    borderSide: BorderSide(color: appcolor.accent),
+                    borderSide: BorderSide(color: Colors.blue), // Change to your desired color
                     borderRadius: BorderRadius.circular(8),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: appcolor.primary),
+                    borderSide: BorderSide(color: Colors.blue), // Change to your desired color
                     borderRadius: BorderRadius.all(Radius.circular(8)),
                   ),
                 ),
                 controller: _name,
-                keyboardType: TextInputType.emailAddress, 
+                keyboardType: TextInputType.emailAddress,
               ),
               SizedBox(height: 30),
               TextFormField(
@@ -141,7 +156,7 @@ class _LoginState extends State<Login> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: appcolor.primary),
+                    borderSide: BorderSide(color: Colors.blue), // Change to your desired color
                     borderRadius: BorderRadius.all(Radius.circular(8)),
                   ),
                 ),
@@ -154,12 +169,12 @@ class _LoginState extends State<Login> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      print("Forget password");
+                      handleForgotPassword(_name.text); // Call the function to handle forgotten password
                     },
                     child: Text(
                       "Forgotten password",
                       style: TextStyle(
-                        color: appcolor.text2,
+                        color: Colors.blue, // Change to your desired color
                         fontWeight: FontWeight.w800,
                       ),
                     ),
@@ -182,7 +197,7 @@ class _LoginState extends State<Login> {
                         child: Text(
                           "Register",
                           style: TextStyle(
-                            color: appcolor.secondary,
+                            color: Colors.blue, // Change to your desired color
                             fontSize: 17,
                             fontWeight: FontWeight.w600,
                           ),
@@ -201,7 +216,7 @@ class _LoginState extends State<Login> {
                     ),
                     style: ButtonStyle(
                       backgroundColor:
-                          MaterialStateProperty.all<Color>(appcolor.primary),
+                          MaterialStateProperty.all<Color>(Colors.blue), // Change to your desired color
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5.0),

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:link/CasePages/case.dart';
 import 'package:link/EmergencyPages/emergency.dart';
 import 'package:link/FinePages/fine.dart';
@@ -45,7 +46,6 @@ class _DashboardState extends State<Dashboard> {
     }
   }
 
-  // Widget build() method remains unchanged
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -148,11 +148,18 @@ class _DashboardState extends State<Dashboard> {
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(right: 8),
-                                  child: TextButton(
-                                    onPressed: () async {
-                                      await Future.delayed(
-                                          Duration(seconds: 5));
-                                      Emergency();
+                                  child: GestureDetector(
+                                    onTap: () async {
+                                      await Future.delayed(Duration(seconds: 5));
+                                     
+                                    },
+                                    onLongPress: () {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                          content: Text('Emergency request sent!'),
+                                          duration: Duration(seconds: 3),
+                                        ),
+                                      );
                                     },
                                     child: Container(
                                       decoration: BoxDecoration(
@@ -160,8 +167,7 @@ class _DashboardState extends State<Dashboard> {
                                         borderRadius: BorderRadius.circular(8),
                                         boxShadow: [
                                           BoxShadow(
-                                            color: Color(0xFF000000)
-                                                .withOpacity(0.1),
+                                            color: Color(0xFF000000).withOpacity(0.1),
                                             offset: Offset(3, 3),
                                             blurRadius: 0,
                                             spreadRadius: 2,
@@ -178,7 +184,7 @@ class _DashboardState extends State<Dashboard> {
                                                   color: appcolor.white,
                                                   fontWeight: FontWeight.w600),
                                             ),
-                                            Text("hold for 5 seconds",
+                                            Text("press  for requess",
                                                 style: TextStyle(fontSize: 9)),
                                           ],
                                         ),
@@ -462,8 +468,7 @@ class _DashboardState extends State<Dashboard> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) =>
-                                              const Emergency(),
+                                          builder: (context) => const Emergency(),
                                         ),
                                       );
                                     },

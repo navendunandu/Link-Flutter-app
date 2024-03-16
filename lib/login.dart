@@ -126,7 +126,7 @@ class _LoginState extends State<Login> {
               ),
               TextFormField(
                 decoration: InputDecoration(
-                  hintText: "Username",
+                  hintText: "Email",
                   border: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.blue), // Change to your desired color
                     borderRadius: BorderRadius.circular(8),

@@ -2,11 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:link/CasePages/case.dart';
 import 'package:link/EmergencyPages/emergency.dart';
 import 'package:link/FinePages/fine.dart';
 import 'package:link/LawyerPages/lawyer.dart';
 import 'package:link/LawyerPages/myCase.dart';
+import 'package:link/login.dart';
 import 'package:link/main.dart';
 import 'package:link/MissingPages/missing.dart';
 import 'package:link/PermitPages/permit.dart';
@@ -77,9 +77,18 @@ class _DashboardState extends State<Dashboard> {
             ),
             backgroundColor: Colors.transparent,
             actions: [
-              Icon(
-                Icons.settings,
-                size: 40,
+              GestureDetector(
+                onTap: () {
+                  Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => Login(),)
+                    
+                  );
+                },
+                
+                                        
+                child: Icon(
+                  Icons.exit_to_app_sharp,
+                  size: 40,
+                ),
               ),
               SizedBox(
                 width: 20,

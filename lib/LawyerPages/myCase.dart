@@ -23,14 +23,12 @@ class _MyCaseState extends State<MyCase> {
 
   Future<void> fetchCases() async {
     try {
-      // Fetching current user's ID
       String? userId = FirebaseAuth.instance.currentUser?.uid;
       if (userId == null) {
         print("Error: Current user not found.");
         return;
       }
 
-      // Fetching user data to get user_Id
       DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
           .collection('collection_user')
           .doc(userId)
@@ -40,27 +38,27 @@ class _MyCaseState extends State<MyCase> {
         print("Error: User_Id not found for current user.");
         return;
       }
+      else{
+        print("User_Id: $user_Id");
+      }
 
-      // Fetching cases data
       QuerySnapshot casesSnapshot = await FirebaseFirestore.instance
           .collection('PoliceComplaint')
           .where('userId', isEqualTo: user_Id)
           .get();
       print("Fetched cases data");
 
-      List<dynamic> casesData = casesSnapshot.docs.map((doc) {
-        return {
-          'id': doc.id,
-          'caseCategory': doc['caseCategory'],
-          'subCaseCategory': doc['subCaseCategory'],
-          'timestamp': doc['timestamp'].toDate().toString(),
-          'lawyer':
-              doc['lawyer'], // Assuming 'lawyer' field contains the lawyer's ID
-        };
-      }).toList();
-      print("Cases data mapped: $casesData");
+        List<dynamic> casesData = casesSnapshot.docs.map((doc) {
+          return {
+            'id': doc.id,
+            'caseCategory': doc['caseCategory'],
+            'subCaseCategory': doc['subCaseCategory'],
+            'timestamp': doc['timestamp'].toDate().toString(),
+        
+          };
+        }).toList();
+      print("Cases data mapped: $casesData.length");
 
-      // Fetching case type data
       QuerySnapshot caseTypeSnapshot =
           await FirebaseFirestore.instance.collection('CaseType').get();
       print("Fetched case type data");
@@ -71,7 +69,6 @@ class _MyCaseState extends State<MyCase> {
       });
       print("Case type data: $caseTypeData");
 
-      // Fetching sub case type data
       QuerySnapshot subCaseTypeSnapshot =
           await FirebaseFirestore.instance.collection('SubCaseType').get();
       print("Fetched sub case type data");
@@ -95,8 +92,11 @@ class _MyCaseState extends State<MyCase> {
 
       print("Cases data processed: $cases");
 
-      // Fetching lawyer data for each case
-      casesData.forEach((item) => fetchLawyer(item['lawyer']));
+      casesData.forEach((item) {
+        if (item['lawyer'] != null) {
+          fetchLawyer(item['lawyer']);
+        }
+      });
     } catch (error) {
       print("Error fetching cases: $error");
       setState(() {
@@ -108,25 +108,19 @@ class _MyCaseState extends State<MyCase> {
   Future<void> fetchLawyer(String? lawyerId) async {
     if (lawyerId != null) {
       try {
-        // Query the lawyer collection based on the userId
         QuerySnapshot lawyerSnapshot = await FirebaseFirestore.instance
             .collection('lawyer_collection')
             .where('userId', isEqualTo: lawyerId)
             .get();
 
-        // Check if any documents are found
         if (lawyerSnapshot.docs.isNotEmpty) {
-          // Get the first document (assuming there's only one lawyer for each userId)
           DocumentSnapshot lawyerDoc = lawyerSnapshot.docs.first;
-
-          // Get the lawyer data
           dynamic lawyerData = lawyerDoc.data();
 
           setState(() {
             lawyer = lawyerData;
           });
         } else {
-          // No lawyer found with the provided lawyerId (userId)
           setState(() {
             lawyer = null;
           });
@@ -136,7 +130,6 @@ class _MyCaseState extends State<MyCase> {
         print("Error fetching lawyer: $error");
       }
     } else {
-      // lawyerId is null, reset lawyer data
       setState(() {
         lawyer = null;
       });
@@ -145,7 +138,6 @@ class _MyCaseState extends State<MyCase> {
 
   @override
   Widget build(BuildContext context) {
-    // Debug print fetched data
     print("Cases: $cases");
     print("Lawyer: $lawyer");
 
@@ -170,12 +162,12 @@ class _MyCaseState extends State<MyCase> {
       body: Container(
         color: appcolor.secondary,
         child: Container(
-           decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(30),
-                      topRight: Radius.circular(30)),
-                  color: appcolor.white,
-                ),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30),
+              topRight: Radius.circular(30)),
+            color: appcolor.white,
+          ),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: loading
@@ -208,10 +200,7 @@ class _MyCaseState extends State<MyCase> {
                                   Text(
                                       "Category: ${item['subcat']['SubCaseCategory']}"),
                                   Text("Filed on: ${item['timestamp']}"),
-                                  if (lawyer != null)
-                                    Text("Lawyer: ${lawyer['full_name']}")
-                                  else
-                                    const Text("Lawyer not appointed"),
+                                  
                                 ],
                               ),
                             ),

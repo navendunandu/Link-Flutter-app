@@ -199,7 +199,8 @@ class _MyCaseState extends State<MyCase> {
                                   Text("ID: ${item['id']}"),
                                   Text(
                                       "Category: ${item['subcat']['SubCaseCategory']}"),
-                                  Text("Filed on: ${item['timestamp']}"),
+                                  Text("Filed : ${item['timestamp']}"),
+
                                   
                                 ],
                               ),

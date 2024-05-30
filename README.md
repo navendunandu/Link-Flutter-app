@@ -30,5 +30,6 @@ This Git repository hosts the Flutter mobile application for the Comprehensive L
 4. Connect the app to a Firebase project.
 5. Run the app using `flutter run`.
 
-**Contributing:**
-Contributions are welcome! If you'd like to contribute to the development of the mobile app, please follow the contribution guidelines in the repository.
+## Authors
+
+- Developed with Abhijith T P
